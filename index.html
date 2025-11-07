@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's for Dinner - Recipe Fusion Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b8b8b8;
+            --accent: #e94560;
+            --fusion-gradient: linear-gradient(45deg, #ff6b6b, #4ecdc4, #e94560);
+            --suggested-gradient: linear-gradient(45deg, #f39c12, #e67e22);
+            --protein-color: #4CAF50;
+            --carbs-color: #FF9800;
+            --fat-color: #F44336;
+            --calories-color: #9C27B0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Landing Page Styles */
+        .landing-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--card-bg) 100%);
+        }
+
+        .landing-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .landing-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .landing-logo i {
+            font-size: 3rem;
+            background: var(--fusion-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .landing-logo h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--fusion-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .landing-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .landing-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .auth-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .auth-tab.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .auth-forms {
+            padding: 2rem;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+        }
+
+        .form-error {
+            color: var(--accent);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--fusion-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .auth-footer a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--accent);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* Main App Styles (hidden by default) */
+        .main-app {
+            display: none;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: var(--fusion-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--fusion-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--fusion-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-logout:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .fusion-badge {
+            display: inline-flex;
+            align-items: center;
+            background: var(--fusion-gradient);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .search-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-title i {
+            color: var(--secondary-color);
+        }
+
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .custom-select {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .select-trigger {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .select-trigger:hover {
+            border-color: rgba(78, 205, 196, 0.5);
+        }
+
+        .select-trigger:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+        }
+
+        .select-trigger i {
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .custom-select.open .select-trigger i {
+            transform: rotate(180deg);
+        }
+
+        .select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 0.5rem;
+            background-color: #1f2937;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .custom-select.open .select-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .select-option {
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .select-option:hover {
+            background-color: rgba(78, 205, 196, 0.2);
+        }
+
+        .select-option.selected {
+            background-color: rgba(78, 205, 196, 0.3);
+            font-weight: 500;
+        }
+
+        .fusion-option {
+            background: var(--fusion-gradient);
+            color: white;
+            font-weight: 500;
+        }
+
+        .form-group select {
+            display: none; /* Hide original select element */
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--secondary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-section {
+            margin-top: 2rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .results-title i {
+            color: var(--primary-color);
+        }
+
+        .results-count {
+            background-color: rgba(78, 205, 196, 0.2);
+            color: var(--secondary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+
+        .recipe-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .recipe-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .recipe-image.loaded {
+            opacity: 1;
+        }
+
+        .image-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .image-placeholder i {
+            font-size: 2rem;
+        }
+
+        .recipe-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .recipe-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .recipe-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .recipe-category, .recipe-area {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Nutrition Badge Styles */
+        .nutrition-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(156, 39, 176, 0.1);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .nutrition-badge i {
+            color: var(--calories-color);
+            font-size: 1rem;
+        }
+
+        .nutrition-info {
+            display: flex;
+            align-items: baseline;
+            gap: 0.25rem;
+        }
+
+        .calories-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--calories-color);
+        }
+
+        .calories-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .nutrition-details {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        .nutrition-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .nutrition-item.protein {
+            color: var(--protein-color);
+        }
+
+        .nutrition-item.carbs {
+            color: var(--carbs-color);
+        }
+
+        .nutrition-item.fat {
+            color: var(--fat-color);
+        }
+
+        .recipe-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .recipe-section {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ingredients-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .ingredient-item i {
+            color: var(--primary-color);
+            font-size: 0.8rem;
+        }
+
+        .instructions-list {
+            counter-reset: step-counter;
+        }
+
+        .instruction-step {
+            position: relative;
+            padding-left: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .instruction-step::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.8rem;
+            height: 1.8rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .fusion-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--fusion-gradient);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .suggested-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--suggested-gradient);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .suggestion-note {
+            background-color: rgba(243, 156, 18, 0.1);
+            border-left: 4px solid #f39c12;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .suggestion-note i {
+            color: #f39c12;
+            font-size: 1.2rem;
+        }
+
+        /* Nutrition Summary Section */
+        .nutrition-summary {
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(76, 175, 80, 0.1));
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .nutrition-summary-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nutrition-summary-title i {
+            color: var(--calories-color);
+        }
+
+        .nutrition-macros {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .macro-item {
+            text-align: center;
+            padding: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+
+        .macro-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .macro-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .macro-item.calories .macro-value {
+            color: var(--calories-color);
+        }
+
+        .macro-item.protein .macro-value {
+            color: var(--protein-color);
+        }
+
+        .macro-item.carbs .macro-value {
+            color: var(--carbs-color);
+        }
+
+        .macro-item.fat .macro-value {
+            color: var(--fat-color);
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ingredients-list {
+                grid-template-columns: 1fr;
+            }
+
+            .nutrition-macros {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div class="landing-container" id="landingPage">
+        <div class="landing-header">
+            <div class="landing-logo">
+                <i class="fas fa-utensils"></i>
+                <h1>What's for Dinner</h1>
+            </div>
+            <div class="landing-subtitle">Recipe Fusion Engine</div>
+            <p class="landing-description">Discover unique fusion recipes by combining different cuisines and categories. Create culinary masterpieces with our intelligent recipe fusion engine.</p>
+        </div>
+
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="signinTab">Sign In</div>
+                <div class="auth-tab" id="registerTab">Register</div>
+            </div>
+
+            <div class="auth-forms">
+                <!-- Sign In Form -->
+                <form class="auth-form active" id="signinForm">
+                    <div class="form-group">
+                        <label for="signinEmail">Email</label>
+                        <input type="email" id="signinEmail" class="form-control" placeholder="Enter your email" required>
+                        <div class="form-error" id="signinEmailError">Please enter a valid email</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signinPassword">Password</label>
+                        <input type="password" id="signinPassword" class="form-control" placeholder="Enter your password" required>
+                        <div class="form-error" id="signinPasswordError">Password is required</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="signinBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </button>
+                </form>
+
+                <!-- Register Form -->
+                <form class="auth-form" id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <input type="text" id="registerName" class="form-control" placeholder="Enter your full name" required>
+                        <div class="form-error" id="registerNameError">Name is required</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" class="form-control" placeholder="Enter your email" required>
+                        <div class="form-error" id="registerEmailError">Please enter a valid email</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" class="form-control" placeholder="Create a password" required>
+                        <div class="form-error" id="registerPasswordError">Password must be at least 6 characters</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                        <div class="form-error" id="confirmPasswordError">Passwords do not match</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="registerBtn">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+            </div>
+
+            <div class="auth-footer">
+                <span id="authFooterText">Don't have an account? <a href="#" id="authFooterLink">Register</a></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App (hidden by default) -->
+    <div class="main-app" id="mainApp">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    <div>
+                        <h1>What's for Dinner</h1>
+                        <div class="subtitle">Recipe Fusion Engine</div>
+                    </div>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div class="user-name" id="userName">User</div>
+                    </div>
+                    <button class="btn btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="search-section">
+                <h2 class="search-title">
+                    <i class="fas fa-search"></i>
+                    Find Your Fusion Recipe
+                    <span class="fusion-badge">Fusion Engine</span>
+                </h2>
+                <form class="search-form" id="searchForm">
+                    <div class="form-group">
+                        <label for="category">Recipe Category</label>
+                        <div class="custom-select" id="categorySelect">
+                            <select id="category" required>
+                                <option value="">Select a category</option>
+                            </select>
+                            <div class="select-trigger">
+                                <span>Select a category</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="select-options">
+                                <div class="select-option" data-value="">Select a category</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="area">Area/Cuisine</label>
+                        <div class="custom-select" id="areaSelect">
+                            <select id="area" required>
+                                <option value="">Select a cuisine</option>
+                            </select>
+                            <div class="select-trigger">
+                                <span>Select a cuisine</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="select-options">
+                                <div class="select-option" data-value="">Select a cuisine</div>
+                                <div class="select-option fusion-option" data-value="fusion">
+                                    <i class="fas fa-fire"></i>
+                                    Fusion Mix (All Cuisines)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                            Find Fusion Recipes
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Finding your fusion recipes...</p>
+            </div>
+
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="suggestion-note" id="suggestionNote" style="display: none;">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <strong>Suggested Fusion:</strong> No direct matches found, but here are recipes that can inspire your fusion creation!
+                    </div>
+                </div>
+                <div class="results-header">
+                    <h2 class="results-title">
+                        <i class="fas fa-book-open"></i>
+                        Fusion Recipes
+                    </h2>
+                    <div class="results-count" id="resultsCount">0 recipes found</div>
+                </div>
+                <div class="recipe-grid" id="recipeGrid">
+                    <!-- Recipes will be dynamically added here -->
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2023 Recipe Fusion Engine | Powered by TheMealDB API</p>
+        </footer>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-info-circle"></i>
+        <span id="notificationText"></span>
+    </div>
+
+    <script>
+        // Nutrition Calculator for estimating calories and macros
+        class NutritionCalculator {
+            constructor() {
+                // Database of common ingredients with their nutritional values (per 100g)
+                this.ingredientDatabase = {
+                    // Proteins
+                    'chicken': { calories: 165, protein: 31, carbs: 0, fat: 3.6 },
+                    'beef': { calories: 250, protein: 26, carbs: 0, fat: 15 },
+                    'pork': { calories: 242, protein: 27, carbs: 0, fat: 14 },
+                    'fish': { calories: 206, protein: 22, carbs: 0, fat: 12 },
+                    'salmon': { calories: 208, protein: 20, carbs: 0, fat: 13 },
+                    'tuna': { calories: 144, protein: 30, carbs: 0, fat: 1 },
+                    'shrimp': { calories: 99, protein: 24, carbs: 0.2, fat: 0.3 },
+                    'egg': { calories: 155, protein: 13, carbs: 1.1, fat: 11 },
+                    'tofu': { calories: 76, protein: 8, carbs: 1.9, fat: 4.8 },
+                    'lamb': { calories: 294, protein: 25, carbs: 0, fat: 21 },
+                    
+                    // Carbs
+                    'rice': { calories: 130, protein: 2.7, carbs: 28, fat: 0.3 },
+                    'pasta': { calories: 131, protein: 5, carbs: 25, fat: 1.1 },
+                    'potato': { calories: 77, protein: 2, carbs: 17, fat: 0.1 },
+                    'bread': { calories: 265, protein: 9, carbs: 49, fat: 3.2 },
+                    'flour': { calories: 364, protein: 10, carbs: 76, fat: 1 },
+                    'noodles': { calories: 138, protein: 5, carbs: 25, fat: 1.8 },
+                    'quinoa': { calories: 120, protein: 4.4, carbs: 21, fat: 1.9 },
+                    
+                    // Vegetables
+                    'onion': { calories: 40, protein: 1.1, carbs: 9.3, fat: 0.1 },
+                    'garlic': { calories: 149, protein: 6.4, carbs: 33, fat: 0.5 },
+                    'tomato': { calories: 18, protein: 0.9, carbs: 3.9, fat: 0.2 },
+                    'carrot': { calories: 41, protein: 0.9, carbs: 10, fat: 0.2 },
+                    'broccoli': { calories: 34, protein: 2.8, carbs: 7, fat: 0.4 },
+                    'spinach': { calories: 23, protein: 2.9, carbs: 3.6, fat: 0.4 },
+                    'mushroom': { calories: 22, protein: 3.1, carbs: 3.3, fat: 0.3 },
+                    'pepper': { calories: 31, protein: 1, carbs: 7.4, fat: 0.3 },
+                    'cucumber': { calories: 16, protein: 0.7, carbs: 3.6, fat: 0.1 },
+                    'lettuce': { calories: 15, protein: 1.4, carbs: 2.9, fat: 0.2 },
+                    
+                    // Fats/Oils
+                    'oil': { calories: 884, protein: 0, carbs: 0, fat: 100 },
+                    'butter': { calories: 717, protein: 0.9, carbs: 0.1, fat: 81 },
+                    'cheese': { calories: 402, protein: 25, carbs: 1.3, fat: 33 },
+                    'cream': { calories: 340, protein: 2.8, carbs: 2.9, fat: 37 },
+                    'milk': { calories: 42, protein: 3.4, carbs: 5, fat: 1 },
+                    'yogurt': { calories: 59, protein: 10, carbs: 3.6, fat: 0.4 },
+                    
+                    // Legumes
+                    'beans': { calories: 347, protein: 21, carbs: 63, fat: 1.2 },
+                    'lentils': { calories: 116, protein: 9, carbs: 20, fat: 0.4 },
+                    'chickpeas': { calories: 364, protein: 19, carbs: 61, fat: 6 },
+                    
+                    // Nuts/Seeds
+                    'almond': { calories: 579, protein: 21, carbs: 22, fat: 50 },
+                    'peanut': { calories: 567, protein: 25, carbs: 16, fat: 49 },
+                    'walnut': { calories: 654, protein: 15, carbs: 14, fat: 65 },
+                    'sesame': { calories: 573, protein: 17, carbs: 23, fat: 50 },
+                    
+                    // Others
+                    'sugar': { calories: 387, protein: 0, carbs: 100, fat: 0 },
+                    'honey': { calories: 304, protein: 0.3, carbs: 82, fat: 0 },
+                    'soy sauce': { calories: 60, protein: 10, carbs: 5.6, fat: 0.1 },
+                    'ketchup': { calories: 101, protein: 1.1, carbs: 27, fat: 0.2 },
+                    'mayonnaise': { calories: 680, protein: 1, carbs: 0.6, fat: 75 }
+                };
+            }
+
+            // Calculate nutrition based on ingredients
+            calculateNutrition(ingredients) {
+                let totalCalories = 0;
+                let totalProtein = 0;
+                let totalCarbs = 0;
+                let totalFat = 0;
+                let ingredientCount = 0;
+
+                ingredients.forEach(ingredient => {
+                    const normalizedIngredient = ingredient.toLowerCase().trim();
+                    
+                    // Try to find the ingredient in our database
+                    let found = false;
+                    for (const [key, value] of Object.entries(this.ingredientDatabase)) {
+                        if (normalizedIngredient.includes(key)) {
+                            // Estimate portion size (default to 100g for main ingredients, less for spices)
+                            let portionMultiplier = 1;
+                            
+                            // Adjust for common measurements
+                            if (normalizedIngredient.includes('tbsp') || normalizedIngredient.includes('tablespoon')) {
+                                portionMultiplier = 0.15;
+                            } else if (normalizedIngredient.includes('tsp') || normalizedIngredient.includes('teaspoon')) {
+                                portionMultiplier = 0.05;
+                            } else if (normalizedIngredient.includes('cup')) {
+                                portionMultiplier = 0.24;
+                            } else if (normalizedIngredient.includes('oz') || normalizedIngredient.includes('ounce')) {
+                                portionMultiplier = 0.28;
+                            } else if (normalizedIngredient.includes('lb') || normalizedIngredient.includes('pound')) {
+                                portionMultiplier = 4.5;
+                            } else if (normalizedIngredient.includes('clove') || normalizedIngredient.includes('slice')) {
+                                portionMultiplier = 0.05;
+                            }
+                            
+                            // Reduce multiplier for spices and seasonings
+                            if (key === 'garlic' || key === 'onion' || key === 'pepper' || 
+                                normalizedIngredient.includes('powder') || normalizedIngredient.includes('spice') ||
+                                normalizedIngredient.includes('sauce') || normalizedIngredient.includes('seasoning')) {
+                                portionMultiplier *= 0.3;
+                            }
+                            
+                            totalCalories += value.calories * portionMultiplier;
+                            totalProtein += value.protein * portionMultiplier;
+                            totalCarbs += value.carbs * portionMultiplier;
+                            totalFat += value.fat * portionMultiplier;
+                            ingredientCount++;
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    // If ingredient not found, estimate based on category
+                    if (!found) {
+                        let estimatedCalories = 50; // Base estimate
+                        
+                        // Adjust based on ingredient type
+                        if (normalizedIngredient.includes('meat') || normalizedIngredient.includes('chicken') || 
+                            normalizedIngredient.includes('beef') || normalizedIngredient.includes('pork')) {
+                            estimatedCalories = 150;
+                        } else if (normalizedIngredient.includes('vegetable') || normalizedIngredient.includes('veg')) {
+                            estimatedCalories = 30;
+                        } else if (normalizedIngredient.includes('rice') || normalizedIngredient.includes('pasta') || 
+                                   normalizedIngredient.includes('potato')) {
+                            estimatedCalories = 120;
+                        } else if (normalizedIngredient.includes('oil') || normalizedIngredient.includes('butter') ||
+                                   normalizedIngredient.includes('fat')) {
+                            estimatedCalories = 200;
+                        } else if (normalizedIngredient.includes('sugar') || normalizedIngredient.includes('sweet')) {
+                            estimatedCalories = 100;
+                        }
+                        
+                        totalCalories += estimatedCalories;
+                        totalProtein += estimatedCalories * 0.15; // 15% protein estimate
+                        totalCarbs += estimatedCalories * 0.5; // 50% carbs estimate
+                        totalFat += estimatedCalories * 0.35; // 35% fat estimate
+                        ingredientCount++;
+                    }
+                });
+
+                // Round values and ensure minimum values
+                totalCalories = Math.max(Math.round(totalCalories), 100);
+                totalProtein = Math.max(Math.round(totalProtein), 5);
+                totalCarbs = Math.max(Math.round(totalCarbs), 10);
+                totalFat = Math.max(Math.round(totalFat), 5);
+
+                return {
+                    calories: totalCalories,
+                    protein: totalProtein,
+                    carbs: totalCarbs,
+                    fat: totalFat,
+                    ingredientCount: ingredientCount
+                };
+            }
+
+            // Get health rating based on nutritional balance
+            getHealthRating(nutrition) {
+                const { calories, protein, carbs, fat } = nutrition;
+                
+                // Calculate protein percentage
+                const proteinCalories = protein * 4;
+                const carbCalories = carbs * 4;
+                const fatCalories = fat * 9;
+                const totalCalculated = proteinCalories + carbCalories + fatCalories;
+                
+                const proteinPercentage = (proteinCalories / totalCalculated) * 100;
+                const carbPercentage = (carbCalories / totalCalculated) * 100;
+                const fatPercentage = (fatCalories / totalCalculated) * 100;
+                
+                // Health scoring
+                let score = 0;
+                
+                // Protein score (higher is better for muscle building)
+                if (proteinPercentage >= 25 && proteinPercentage <= 35) score += 30;
+                else if (proteinPercentage >= 20 && proteinPercentage < 25) score += 20;
+                else if (proteinPercentage >= 15 && proteinPercentage < 20) score += 10;
+                
+                // Carb score (moderate is good)
+                if (carbPercentage >= 40 && carbPercentage <= 50) score += 25;
+                else if (carbPercentage >= 30 && carbPercentage < 40) score += 15;
+                else if (carbPercentage >= 50 && carbPercentage <= 60) score += 15;
+                
+                // Fat score (lower is generally better)
+                if (fatPercentage >= 20 && fatPercentage <= 30) score += 25;
+                else if (fatPercentage >= 15 && fatPercentage < 20) score += 20;
+                else if (fatPercentage >= 30 && fatPercentage <= 35) score += 15;
+                
+                // Calorie score (moderate calories are better)
+                if (calories >= 300 && calories <= 600) score += 20;
+                else if (calories >= 200 && calories < 300) score += 15;
+                else if (calories >= 600 && calories <= 800) score += 10;
+                
+                return Math.min(score, 100);
+            }
+        }
+
+        // Authentication Manager
+        class AuthManager {
+            constructor() {
+                this.currentUser = null;
+                this.init();
+            }
+
+            init() {
+                // Check if user is already logged in
+                const userData = localStorage.getItem('currentUser');
+                if (userData) {
+                    this.currentUser = JSON.parse(userData);
+                    this.showMainApp();
+                }
+            }
+
+            // Register a new user
+            register(name, email, password) {
+                // Get existing users
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // Check if email already exists
+                if (users.find(user => user.email === email)) {
+                    return { success: false, message: 'Email already registered' };
+                }
+                
+                // Add new user
+                const newUser = {
+                    id: Date.now().toString(),
+                    name,
+                    email,
+                    password // In a real app, this would be hashed
+                };
+                
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                return { success: true, message: 'Registration successful' };
+            }
+
+            // Sign in user
+            signin(email, password) {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // Find user by email
+                const user = users.find(user => user.email === email);
+                
+                if (!user) {
+                    return { success: false, message: 'User not found' };
+                }
+                
+                // Check password
+                if (user.password !== password) {
+                    return { success: false, message: 'Incorrect password' };
+                }
+                
+                // Set current user
+                this.currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                return { success: true, message: 'Sign in successful' };
+            }
+
+            // Logout user
+            logout() {
+                this.currentUser = null;
+                localStorage.removeItem('currentUser');
+                this.showLandingPage();
+            }
+
+            // Show main app
+            showMainApp() {
+                document.getElementById('landingPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                
+                // Update user info in header
+                if (this.currentUser) {
+                    document.getElementById('userName').textContent = this.currentUser.name;
+                    document.getElementById('userAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
+                }
+            }
+
+            // Show landing page
+            showLandingPage() {
+                document.getElementById('landingPage').style.display = 'flex';
+                document.getElementById('mainApp').style.display = 'none';
+            }
+        }
+
+        // Data Management Layer - Using Map for efficient data storage
+        class DataManager {
+            constructor() {
+                this.recipes = new Map(); // Map of recipeId -> recipe details
+                this.categoryRecipes = new Map(); // Map of category -> Set of recipeIds
+                this.areaRecipes = new Map(); // Map of area -> Set of recipeIds
+                this.popularRecipes = []; // Array of popular recipes
+            }
+
+            // Store recipe details
+            addRecipe(recipe) {
+                this.recipes.set(recipe.idMeal, recipe);
+            }
+
+            // Get recipe details
+            getRecipe(id) {
+                return this.recipes.get(id);
+            }
+
+            // Add recipe to category index
+            addRecipeToCategory(category, recipeId) {
+                if (!this.categoryRecipes.has(category)) {
+                    this.categoryRecipes.set(category, new Set());
+                }
+                this.categoryRecipes.get(category).add(recipeId);
+            }
+
+            // Add recipe to area index
+            addRecipeToArea(area, recipeId) {
+                if (!this.areaRecipes.has(area)) {
+                    this.areaRecipes.set(area, new Set());
+                }
+                this.areaRecipes.get(area).add(recipeId);
+            }
+
+            // Find intersection of category and area recipes using Set operations
+            findIntersection(category, area) {
+                const categoryIds = this.categoryRecipes.get(category) || new Set();
+                const areaIds = this.areaRecipes.get(area) || new Set();
+                
+                // Efficient intersection using Set
+                const intersection = [...categoryIds].filter(id => areaIds.has(id));
+                
+                // Convert to recipe objects
+                return intersection.map(id => this.recipes.get(id)).filter(Boolean);
+            }
+
+            // Get recipes from category
+            getCategoryRecipes(category) {
+                const categoryIds = this.categoryRecipes.get(category) || new Set();
+                return [...categoryIds].map(id => this.recipes.get(id)).filter(Boolean);
+            }
+
+            // Get recipes from area
+            getAreaRecipes(area) {
+                const areaIds = this.areaRecipes.get(area) || new Set();
+                return [...areaIds].map(id => this.recipes.get(id)).filter(Boolean);
+            }
+        }
+
+        // Lazy Loading for images
+        class ImageLoader {
+            constructor() {
+                this.imageObserver = null;
+                this.init();
+            }
+
+            init() {
+                // Create an Intersection Observer to detect when images enter viewport
+                this.imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            const src = img.dataset.src;
+                            
+                            if (src) {
+                                img.src = src;
+                                img.classList.add('loaded');
+                                observer.unobserve(img);
+                            }
+                        }
+                    });
+                }, {
+                    rootMargin: '50px 0px', // Start loading 50px before image is in viewport
+                    threshold: 0.01
+                });
+            }
+
+            observe(img) {
+                if (this.imageObserver) {
+                    this.imageObserver.observe(img);
+                }
+            }
+
+            disconnect() {
+                if (this.imageObserver) {
+                    this.imageObserver.disconnect();
+                }
+            }
+        }
+
+        // API Service - Using Promise.all for concurrent API calls
+        class ApiService {
+            constructor() {
+                this.baseUrl = 'https://www.themealdb.com/api/json/v1/1/';
+            }
+
+            // Fetch categories
+            async fetchCategories() {
+                const response = await fetch(`${this.baseUrl}categories.php`);
+                return response.json();
+            }
+
+            // Fetch areas
+            async fetchAreas() {
+                const response = await fetch(`${this.baseUrl}list.php?a=list`);
+                return response.json();
+            }
+
+            // Fetch recipes by category
+            async fetchRecipesByCategory(category) {
+                const response = await fetch(`${this.baseUrl}filter.php?c=${category}`);
+                return response.json();
+            }
+
+            // Fetch recipes by area
+            async fetchRecipesByArea(area) {
+                const response = await fetch(`${this.baseUrl}filter.php?a=${area}`);
+                return response.json();
+            }
+
+            // Fetch recipe details
+            async fetchRecipeDetails(id) {
+                const response = await fetch(`${this.baseUrl}lookup.php?i=${id}`);
+                return response.json();
+            }
+
+            // Fetch popular recipes
+            async fetchPopularRecipes() {
+                const response = await fetch(`${this.baseUrl}search.php?s=`);
+                return response.json();
+            }
+
+            // Fetch multiple recipe details concurrently using Promise.all
+            async fetchMultipleRecipeDetails(ids) {
+                const promises = ids.map(id => this.fetchRecipeDetails(id));
+                const results = await Promise.all(promises);
+                return results.map(result => result.meals ? result.meals[0] : null).filter(Boolean);
+            }
+
+            // Fetch recipes from multiple areas concurrently
+            async fetchRecipesFromMultipleAreas(category, areas) {
+                const promises = areas.map(area => this.fetchRecipesByCategoryAndArea(category, area));
+                const results = await Promise.all(promises);
+                
+                // Combine all meals from different areas
+                const allMeals = [];
+                results.forEach((data, index) => {
+                    if (data.meals) {
+                        // Add area information to each meal
+                        const mealsWithArea = data.meals.map(meal => ({
+                            ...meal,
+                            fusionArea: areas[index]
+                        }));
+                        allMeals.push(...mealsWithArea);
+                    }
+                });
+                
+                return allMeals;
+            }
+
+            // Fetch recipes by category and area
+            async fetchRecipesByCategoryAndArea(category, area) {
+                // Note: TheMealDB API doesn't support filtering by both category and area in one call
+                // So we'll use a workaround
+                const [categoryData, areaData] = await Promise.all([
+                    this.fetchRecipesByCategory(category),
+                    this.fetchRecipesByArea(area)
+                ]);
+                
+                return {
+                    category: categoryData.meals || [],
+                    area: areaData.meals || []
+                };
+            }
+        }
+
+        // DOM Elements for Authentication
+        const signinTab = document.getElementById('signinTab');
+        const registerTab = document.getElementById('registerTab');
+        const signinForm = document.getElementById('signinForm');
+        const registerForm = document.getElementById('registerForm');
+        const authFooterText = document.getElementById('authFooterText');
+        const authFooterLink = document.getElementById('authFooterLink');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // DOM Elements for Main App
+        const categorySelect = document.getElementById('categorySelect');
+        const areaSelect = document.getElementById('areaSelect');
+        const categoryOriginal = document.getElementById('category');
+        const areaOriginal = document.getElementById('area');
+        const searchForm = document.getElementById('searchForm');
+        const searchBtn = document.getElementById('searchBtn');
+        const loading = document.getElementById('loading');
+        const resultsSection = document.getElementById('resultsSection');
+        const recipeGrid = document.getElementById('recipeGrid');
+        const resultsCount = document.getElementById('resultsCount');
+        const suggestionNote = document.getElementById('suggestionNote');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+
+        // Initialize services and managers
+        const authManager = new AuthManager();
+        const dataManager = new DataManager();
+        const imageLoader = new ImageLoader();
+        const apiService = new ApiService();
+        const nutritionCalculator = new NutritionCalculator();
+
+        // Store all areas for fusion functionality
+        let allAreas = [];
+
+        // Authentication Event Listeners
+        signinTab.addEventListener('click', () => {
+            signinTab.classList.add('active');
+            registerTab.classList.remove('active');
+            signinForm.classList.add('active');
+            registerForm.classList.remove('active');
+            authFooterText.innerHTML = 'Don\'t have an account? <a href="#" id="authFooterLink">Register</a>';
+            document.getElementById('authFooterLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                registerTab.click();
+            });
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active');
+            signinTab.classList.remove('active');
+            registerForm.classList.add('active');
+            signinForm.classList.remove('active');
+            authFooterText.innerHTML = 'Already have an account? <a href="#" id="authFooterLink">Sign In</a>';
+            document.getElementById('authFooterLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                signinTab.click();
+            });
+        });
+
+        authFooterLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerTab.click();
+        });
+
+        // Sign In Form Submission
+        signinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('signinEmail').value;
+            const password = document.getElementById('signinPassword').value;
+            
+            // Reset errors
+            document.querySelectorAll('.form-error').forEach(error => {
+                error.classList.remove('show');
+            });
+            
+            // Validate
+            let isValid = true;
+            
+            if (!email) {
+                document.getElementById('signinEmailError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!password) {
+                document.getElementById('signinPasswordError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Attempt sign in
+            const result = authManager.signin(email, password);
+            
+            if (result.success) {
+                showNotification(result.message, 'success');
+                authManager.showMainApp();
+                loadCategories();
+                loadAreas();
+                loadPopularRecipes();
+            } else {
+                showNotification(result.message, 'error');
+            }
+        });
+
+        // Register Form Submission
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Reset errors
+            document.querySelectorAll('.form-error').forEach(error => {
+                error.classList.remove('show');
+            });
+            
+            // Validate
+            let isValid = true;
+            
+            if (!name) {
+                document.getElementById('registerNameError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!email) {
+                document.getElementById('registerEmailError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!password || password.length < 6) {
+                document.getElementById('registerPasswordError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Attempt registration
+            const result = authManager.register(name, email, password);
+            
+            if (result.success) {
+                showNotification(result.message, 'success');
+                // Auto sign in after successful registration
+                authManager.signin(email, password);
+                authManager.showMainApp();
+                loadCategories();
+                loadAreas();
+                loadPopularRecipes();
+            } else {
+                showNotification(result.message, 'error');
+            }
+        });
+
+        // Logout Button
+        logoutBtn.addEventListener('click', () => {
+            authManager.logout();
+            showNotification('You have been logged out', 'info');
+        });
+
+        // Load popular recipes as fallback
+        async function loadPopularRecipes() {
+            try {
+                const data = await apiService.fetchPopularRecipes();
+                if (data.meals) {
+                    dataManager.popularRecipes = data.meals.slice(0, 20); // Store first 20 as popular
+                    
+                    // Index popular recipes in data manager
+                    dataManager.popularRecipes.forEach(recipe => {
+                        dataManager.addRecipe(recipe);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading popular recipes:', error);
+            }
+        }
+
+        // Setup custom select functionality
+        function setupCustomSelects() {
+            // Category select
+            const categoryTrigger = categorySelect.querySelector('.select-trigger');
+            
+            categoryTrigger.addEventListener('click', () => {
+                categorySelect.classList.toggle('open');
+                // Close other select
+                areaSelect.classList.remove('open');
+            });
+            
+            // Area select
+            const areaTrigger = areaSelect.querySelector('.select-trigger');
+            
+            areaTrigger.addEventListener('click', () => {
+                areaSelect.classList.toggle('open');
+                // Close other select
+                categorySelect.classList.remove('open');
+            });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!categorySelect.contains(e.target)) {
+                    categorySelect.classList.remove('open');
+                }
+                if (!areaSelect.contains(e.target)) {
+                    areaSelect.classList.remove('open');
+                }
+            });
+            
+            // Handle option selection
+            document.querySelectorAll('.select-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    const text = this.textContent.replace('★', '').trim();
+                    const select = this.closest('.custom-select');
+                    const trigger = select.querySelector('.select-trigger span');
+                    const originalSelect = select.querySelector('select');
+                    
+                    // Update trigger text
+                    trigger.textContent = text;
+                    
+                    // Update original select value
+                    originalSelect.value = value;
+                    
+                    // Mark selected option
+                    const options = select.querySelectorAll('.select-option');
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    // Close dropdown
+                    select.classList.remove('open');
+                });
+            });
+        }
+
+        // Load recipe categories
+        async function loadCategories() {
+            try {
+                const data = await apiService.fetchCategories();
+                
+                const categoryOptions = categorySelect.querySelector('.select-options');
+                
+                data.categories.forEach(category => {
+                    // Add to original select
+                    const option = document.createElement('option');
+                    option.value = category.strCategory;
+                    option.textContent = category.strCategory;
+                    categoryOriginal.appendChild(option);
+                    
+                    // Add to custom select
+                    const customOption = document.createElement('div');
+                    customOption.className = 'select-option';
+                    customOption.setAttribute('data-value', category.strCategory);
+                    customOption.textContent = category.strCategory;
+                    categoryOptions.appendChild(customOption);
+                    
+                    // Add click event
+                    customOption.addEventListener('click', function() {
+                        const value = this.getAttribute('data-value');
+                        const text = this.textContent.replace('★', '').trim();
+                        const trigger = categorySelect.querySelector('.select-trigger span');
+                        
+                        // Update trigger text
+                        trigger.textContent = text;
+                        
+                        // Update original select value
+                        categoryOriginal.value = value;
+                        
+                        // Mark selected option
+                        const options = categorySelect.querySelectorAll('.select-option');
+                        options.forEach(opt => opt.classList.remove('selected'));
+                        this.classList.add('selected');
+                        
+                        // Close dropdown
+                        categorySelect.classList.remove('open');
+                    });
+                });
+                
+                // Setup custom selects after loading options
+                setupCustomSelects();
+            } catch (error) {
+                showNotification('Failed to load categories. Please try again.', 'error');
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        // Load cuisine areas
+        async function loadAreas() {
+            try {
+                const data = await apiService.fetchAreas();
+                
+                const areaOptions = areaSelect.querySelector('.select-options');
+                
+                // Store all areas for fusion functionality
+                allAreas = data.meals.map(area => area.strArea);
+                
+                data.meals.forEach(area => {
+                    // Add to original select
+                    const option = document.createElement('option');
+                    option.value = area.strArea;
+                    option.textContent = area.strArea;
+                    areaOriginal.appendChild(option);
+                    
+                    // Add to custom select (before the fusion option)
+                    const customOption = document.createElement('div');
+                    customOption.className = 'select-option';
+                    customOption.setAttribute('data-value', area.strArea);
+                    customOption.textContent = area.strArea;
+                    
+                    // Insert before the fusion option
+                    const fusionOption = areaOptions.querySelector('.fusion-option');
+                    areaOptions.insertBefore(customOption, fusionOption);
+                    
+                    // Add click event
+                    customOption.addEventListener('click', function() {
+                        const value = this.getAttribute('data-value');
+                        const text = this.textContent.replace('★', '').trim();
+                        const trigger = areaSelect.querySelector('.select-trigger span');
+                        
+                        // Update trigger text
+                        trigger.textContent = text;
+                        
+                        // Update original select value
+                        areaOriginal.value = value;
+                        
+                        // Mark selected option
+                        const options = areaSelect.querySelectorAll('.select-option');
+                        options.forEach(opt => opt.classList.remove('selected'));
+                        this.classList.add('selected');
+                        
+                        // Close dropdown
+                        areaSelect.classList.remove('open');
+                    });
+                });
+                
+                // Add click event for fusion option
+                const fusionOption = areaOptions.querySelector('.fusion-option');
+                fusionOption.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    const text = this.textContent.replace('★', '').trim();
+                    const trigger = areaSelect.querySelector('.select-trigger span');
+                    
+                    // Update trigger text
+                    trigger.textContent = text;
+                    
+                    // Update original select value
+                    areaOriginal.value = value;
+                    
+                    // Mark selected option
+                    const options = areaSelect.querySelectorAll('.select-option');
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    // Close dropdown
+                    areaSelect.classList.remove('open');
+                });
+            } catch (error) {
+                showNotification('Failed to load cuisines. Please try again.', 'error');
+                console.error('Error loading areas:', error);
+            }
+        }
+
+        // Handle form submission
+        searchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const category = categoryOriginal.value;
+            const area = areaOriginal.value;
+            
+            if (!category || !area) {
+                showNotification('Please select both a category and a cuisine', 'error');
+                return;
+            }
+            
+            await findFusionRecipes(category, area);
+        });
+
+        // Find fusion recipes using Promise.all for concurrent API calls
+        async function findFusionRecipes(category, area) {
+            // Show loading state
+            loading.classList.add('active');
+            resultsSection.style.display = 'none';
+            searchBtn.disabled = true;
+            
+            try {
+                let fusionRecipes = [];
+                let isSuggested = false;
+                
+                if (area === 'fusion') {
+                    // For fusion, get recipes from multiple cuisines
+                    const selectedAreas = getRandomAreas(3); // Get 3 random areas for fusion
+                    
+                    // Use Promise.all to fetch recipes from multiple areas concurrently
+                    const allMeals = await apiService.fetchRecipesFromMultipleAreas(category, selectedAreas);
+                    
+                    // Also fetch recipes by category alone
+                    const categoryData = await apiService.fetchRecipesByCategory(category);
+                    if (categoryData.meals) {
+                        const mealsWithArea = categoryData.meals.map(meal => ({
+                            ...meal,
+                            fusionArea: 'Mixed'
+                        }));
+                        allMeals.push(...mealsWithArea);
+                    }
+                    
+                    // Remove duplicates based on meal ID using Set for efficiency
+                    const uniqueMeals = [];
+                    const mealIds = new Set();
+                    
+                    allMeals.forEach(meal => {
+                        if (!mealIds.has(meal.idMeal)) {
+                            mealIds.add(meal.idMeal);
+                            uniqueMeals.push(meal);
+                        }
+                    });
+                    
+                    // Store recipes in data manager
+                    uniqueMeals.forEach(recipe => {
+                        dataManager.addRecipe(recipe);
+                        dataManager.addRecipeToCategory(category, recipe.idMeal);
+                    });
+                    
+                    // Fetch full details for all unique meals using Promise.all
+                    const detailedRecipes = await apiService.fetchMultipleRecipeDetails(uniqueMeals.map(m => m.idMeal));
+                    
+                    fusionRecipes = detailedRecipes.map(recipe => ({
+                        ...recipe,
+                        isFusion: true,
+                        fusionAreas: selectedAreas
+                    }));
+                } else {
+                    // Regular intersection of category and area
+                    
+                    // Use Promise.all to fetch both category and area recipes concurrently
+                    const [categoryData, areaData] = await Promise.all([
+                        apiService.fetchRecipesByCategory(category),
+                        apiService.fetchRecipesByArea(area)
+                    ]);
+                    
+                    // Store recipes in data manager
+                    if (categoryData.meals) {
+                        categoryData.meals.forEach(recipe => {
+                            dataManager.addRecipe(recipe);
+                            dataManager.addRecipeToCategory(category, recipe.idMeal);
+                        });
+                    }
+                    
+                    if (areaData.meals) {
+                        areaData.meals.forEach(recipe => {
+                            dataManager.addRecipe(recipe);
+                            dataManager.addRecipeToArea(area, recipe.idMeal);
+                        });
+                    }
+                    
+                    // Find intersection using efficient Set operations
+                    const intersection = dataManager.findIntersection(category, area);
+                    
+                    if (intersection.length > 0) {
+                        // Perfect match found
+                        fusionRecipes = intersection.map(meal => ({
+                            ...meal,
+                            isFusion: false,
+                            fusionAreas: [area]
+                        }));
+                    } else {
+                        // No intersection found - create suggested fusion
+                        isSuggested = true;
+                        
+                        // Get recipes from both category and area
+                        const categoryRecipes = dataManager.getCategoryRecipes(category);
+                        const areaRecipes = dataManager.getAreaRecipes(area);
+                        
+                        const combinedRecipes = [];
+                        
+                        // Add category recipes
+                        categoryRecipes.slice(0, 6).forEach(recipe => {
+                            combinedRecipes.push({
+                                ...recipe,
+                                isSuggested: true,
+                                sourceType: 'category',
+                                fusionAreas: [area]
+                            });
+                        });
+                        
+                        // Add area recipes if we need more
+                        if (combinedRecipes.length < 6) {
+                            areaRecipes.slice(0, 6 - combinedRecipes.length).forEach(recipe => {
+                                // Check if not already added
+                                if (!combinedRecipes.find(r => r.idMeal === recipe.idMeal)) {
+                                    combinedRecipes.push({
+                                        ...recipe,
+                                        isSuggested: true,
+                                        sourceType: 'area',
+                                        fusionAreas: [area]
+                                    });
+                                }
+                            });
+                        }
+                        
+                        // If still not enough, add popular recipes
+                        if (combinedRecipes.length < 6) {
+                            dataManager.popularRecipes.slice(0, 6 - combinedRecipes.length).forEach(recipe => {
+                                if (!combinedRecipes.find(r => r.idMeal === recipe.idMeal)) {
+                                    combinedRecipes.push({
+                                        ...recipe,
+                                        isSuggested: true,
+                                        sourceType: 'popular',
+                                        fusionAreas: [area]
+                                    });
+                                }
+                            });
+                        }
+                        
+                        fusionRecipes = combinedRecipes;
+                    }
+                }
+                
+                // Fetch full details for all recipes using Promise.all
+                const recipeIds = fusionRecipes.map(r => r.idMeal);
+                const detailedRecipes = await apiService.fetchMultipleRecipeDetails(recipeIds);
+                
+                // Display results
+                displayResults(detailedRecipes, category, area, isSuggested);
+            } catch (error) {
+                showNotification('Failed to fetch recipes. Please try again.', 'error');
+                console.error('Error fetching recipes:', error);
+                
+                // Fallback to popular recipes
+                displayFallbackRecipes(category, area);
+            } finally {
+                // Hide loading state
+                loading.classList.remove('active');
+                searchBtn.disabled = false;
+            }
+        }
+
+        // Display fallback recipes if everything fails
+        function displayFallbackRecipes(category, area) {
+            const fallbackRecipes = dataManager.popularRecipes.slice(0, 6).map(recipe => ({
+                ...recipe,
+                isSuggested: true,
+                sourceType: 'fallback',
+                fusionAreas: [area]
+            }));
+            
+            displayResults(fallbackRecipes, category, area, true);
+            showNotification('Showing popular recipes as fallback', 'info');
+        }
+
+        // Get random areas for fusion
+        function getRandomAreas(count) {
+            const shuffled = [...allAreas].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        // Display the results
+        function displayResults(recipes, category, area, isSuggested = false) {
+            resultsSection.style.display = 'block';
+            resultsCount.textContent = `${recipes.length} recipes found`;
+            
+            // Show or hide suggestion note
+            if (isSuggested) {
+                suggestionNote.style.display = 'flex';
+            } else {
+                suggestionNote.style.display = 'none';
+            }
+            
+            // Clear previous results
+            recipeGrid.innerHTML = '';
+            
+            // Add each recipe to the grid
+            recipes.forEach(recipe => {
+                const recipeCard = createRecipeCard(recipe, category, area);
+                recipeGrid.appendChild(recipeCard);
+                
+                // Setup lazy loading for recipe image
+                const img = recipeCard.querySelector('.recipe-image');
+                if (img) {
+                    imageLoader.observe(img);
+                }
+            });
+            
+            const recipeType = isSuggested ? 'suggested fusion' : (area === 'fusion' ? 'fusion' : 'recipe');
+            showNotification(`Found ${recipes.length} ${recipeType}${recipes.length !== 1 ? 's' : ''}!`, 'success');
+        }
+
+        // Create a recipe card element with full details
+        function createRecipeCard(recipe, category, area) {
+            const card = document.createElement('div');
+            card.className = 'recipe-card';
+            card.dataset.recipeId = recipe.idMeal;
+            
+            let indicators = '';
+            if (recipe.isFusion) {
+                indicators = '<div class="fusion-indicator">FUSION</div>';
+            } else if (recipe.isSuggested) {
+                indicators = '<div class="suggested-indicator">SUGGESTED</div>';
+            }
+            
+            let areaDisplay = area === 'fusion' ? 'Multi-Cuisine' : area;
+            if (recipe.sourceType === 'category') {
+                areaDisplay = `${area} (from ${category})`;
+            } else if (recipe.sourceType === 'area') {
+                areaDisplay = `${area} cuisine`;
+            } else if (recipe.sourceType === 'popular') {
+                areaDisplay = 'Popular choice';
+            }
+            
+            // Extract ingredients for nutrition calculation
+            const ingredients = [];
+            for (let i = 1; i <= 20; i++) {
+                const ingredient = recipe[`strIngredient${i}`];
+                if (ingredient && ingredient.trim() !== '') {
+                    ingredients.push(ingredient);
+                }
+            }
+            
+            // Calculate nutrition
+            const nutrition = nutritionCalculator.calculateNutrition(ingredients);
+            const healthRating = nutritionCalculator.getHealthRating(nutrition);
+            
+            // Create ingredients list
+            const ingredientsList = createIngredientsList(recipe);
+            
+            // Create instructions list
+            const instructionsList = createInstructionsList(recipe);
+            
+            // Create nutrition summary
+            const nutritionSummary = createNutritionSummary(nutrition, healthRating);
+            
+            card.innerHTML = `
+                <div class="recipe-image-container">
+                    <div class="image-placeholder">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}" class="recipe-image" data-src="${recipe.strMealThumb}">
+                    ${indicators}
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">${recipe.strMeal}</h3>
+                    <div class="recipe-meta">
+                        <div class="recipe-category">
+                            <i class="fas fa-tag"></i>
+                            ${category}
+                        </div>
+                        <div class="recipe-area">
+                            <i class="fas fa-globe"></i>
+                            ${areaDisplay}
+                        </div>
+                    </div>
+                    
+                    <!-- Nutrition Badge -->
+                    <div class="nutrition-badge">
+                        <i class="fas fa-fire"></i>
+                        <div class="nutrition-info">
+                            <span class="calories-value">${nutrition.calories}</span>
+                            <span class="calories-label">cal</span>
+                        </div>
+                        <div class="nutrition-details">
+                            <div class="nutrition-item protein">
+                                <i class="fas fa-drumstick-bite"></i>
+                                ${nutrition.protein}g
+                            </div>
+                            <div class="nutrition-item carbs">
+                                <i class="fas fa-bread-slice"></i>
+                                ${nutrition.carbs}g
+                            </div>
+                            <div class="nutrition-item fat">
+                                <i class="fas fa-cheese"></i>
+                                ${nutrition.fat}g
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recipe-details">
+                        ${nutritionSummary}
+                        
+                        <div class="recipe-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-list"></i>
+                                Ingredients
+                            </h4>
+                            ${ingredientsList}
+                        </div>
+                        <div class="recipe-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-tasks"></i>
+                                Instructions
+                            </h4>
+                            ${instructionsList}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Create nutrition summary HTML
+        function createNutritionSummary(nutrition, healthRating) {
+            let healthLabel = 'Fair';
+            let healthColor = '#FFC107';
+            
+            if (healthRating >= 80) {
+                healthLabel = 'Excellent';
+                healthColor = '#4CAF50';
+            } else if (healthRating >= 60) {
+                healthLabel = 'Good';
+                healthColor = '#8BC34A';
+            } else if (healthRating >= 40) {
+                healthLabel = 'Moderate';
+                healthColor = '#FF9800';
+            } else {
+                healthLabel = 'High Calorie';
+                healthColor = '#F44336';
+            }
+            
+            return `
+                <div class="nutrition-summary">
+                    <h4 class="nutrition-summary-title">
+                        <i class="fas fa-heartbeat"></i>
+                        Nutritional Information
+                        <span style="margin-left: auto; font-size: 0.9rem; color: ${healthColor};">
+                            ${healthLabel} (${healthRating}/100)
+                        </span>
+                    </h4>
+                    <div class="nutrition-macros">
+                        <div class="macro-item calories">
+                            <div class="macro-value">${nutrition.calories}</div>
+                            <div class="macro-label">Calories</div>
+                        </div>
+                        <div class="macro-item protein">
+                            <div class="macro-value">${nutrition.protein}g</div>
+                            <div class="macro-label">Protein</div>
+                        </div>
+                        <div class="macro-item carbs">
+                            <div class="macro-value">${nutrition.carbs}g</div>
+                            <div class="macro-label">Carbs</div>
+                        </div>
+                        <div class="macro-item fat">
+                            <div class="macro-value">${nutrition.fat}g</div>
+                            <div class="macro-label">Fat</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Create ingredients list HTML
+        function createIngredientsList(recipe) {
+            let ingredientsHTML = '<div class="ingredients-list">';
+            
+            for (let i = 1; i <= 20; i++) {
+                const ingredient = recipe[`strIngredient${i}`];
+                const measure = recipe[`strMeasure${i}`];
+                
+                if (ingredient && ingredient.trim() !== '') {
+                    ingredientsHTML += `
+                        <div class="ingredient-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>${measure ? measure + ' ' : ''}${ingredient}</span>
+                        </div>
+                    `;
+                }
+            }
+            
+            ingredientsHTML += '</div>';
+            return ingredientsHTML;
+        }
+
+        // Create instructions list HTML
+        function createInstructionsList(recipe) {
+            if (!recipe.strInstructions) return '<p>No instructions available</p>';
+            
+            // Split instructions by steps (commonly by newlines or periods)
+            const instructions = recipe.strInstructions.split(/\r\n|\n|\r|\.\s/).filter(step => step.trim() !== '');
+            
+            let instructionsHTML = '<div class="instructions-list">';
+            
+            instructions.forEach((instruction, index) => {
+                if (instruction.trim() !== '') {
+                    instructionsHTML += `
+                        <div class="instruction-step">
+                            ${instruction.trim() + (instruction.endsWith('.') ? '' : '.')}
+                        </div>
+                    `;
+                }
+            });
+            
+            instructionsHTML += '</div>';
+            return instructionsHTML;
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
