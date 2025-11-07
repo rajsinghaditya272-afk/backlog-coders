@@ -21,6 +21,8 @@
             --carbs-color: #FF9800;
             --fat-color: #F44336;
             --calories-color: #9C27B0;
+            --premium-color: #FFD700;
+            --blur-filter: blur(8px);
         }
 
         * {
@@ -88,6 +90,48 @@
             font-size: 1rem;
             max-width: 600px;
             margin: 0 auto;
+        }
+
+        .auth-type-selector {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .auth-type-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 300px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .auth-type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .auth-type-card.active {
+            border: 2px solid var(--secondary-color);
+        }
+
+        .auth-type-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .auth-type-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-type-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
         .auth-container {
@@ -196,6 +240,16 @@
             box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
         }
 
+        .btn-secondary {
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -216,6 +270,27 @@
 
         .auth-footer a:hover {
             text-decoration: underline;
+        }
+
+        .return-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .return-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         .notification {
@@ -254,6 +329,11 @@
 
         /* Main App Styles (hidden by default) */
         .main-app {
+            display: none;
+        }
+
+        /* Admin App Styles (hidden by default) */
+        .admin-app {
             display: none;
         }
 
@@ -302,6 +382,261 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+        }
+
+        .header-icon {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .header-icon:hover {
+            color: var(--text-primary);
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            width: 350px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .dropdown-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .dropdown-content {
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .item-content {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .item-date {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .dropdown-empty {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* Subscription Dropdown */
+        .subscription-dropdown {
+            width: 400px;
+            max-height: 500px;
+        }
+
+        .current-plan-info {
+            background-color: rgba(78, 205, 196, 0.1);
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .current-plan-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .current-plan-details i {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+        }
+
+        .current-plan-details h3 {
+            margin-bottom: 0.25rem;
+        }
+
+        .current-plan-details p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .subscription-plans {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .subscription-plan {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subscription-plan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .subscription-plan.featured {
+            border: 2px solid var(--premium-color);
+        }
+
+        .subscription-plan.featured::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: 10px;
+            right: -30px;
+            background-color: var(--premium-color);
+            color: var(--dark-bg);
+            font-weight: 600;
+            padding: 0.25rem 3rem;
+            transform: rotate(45deg);
+            font-size: 0.7rem;
+        }
+
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--premium-color);
+        }
+
+        .plan-duration {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-features {
+            margin-bottom: 1rem;
+        }
+
+        .plan-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .plan-feature i {
+            color: var(--secondary-color);
+        }
+
+        .btn-subscribe {
+            background: var(--premium-gradient);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-subscribe:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-subscribe:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .user-info {
@@ -541,7 +876,7 @@
 
         .recipe-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
         }
 
@@ -553,13 +888,41 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
             position: relative;
-            display: flex;
-            flex-direction: column;
         }
 
         .recipe-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .recipe-card.blurred {
+            position: relative;
+        }
+
+        .recipe-card.blurred::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: var(--blur-filter);
+            z-index: 1;
+            border-radius: 12px;
+        }
+
+        .recipe-card.blurred::after {
+            content: 'Premium Recipe';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--premium-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 2;
         }
 
         .recipe-image-container {
@@ -599,9 +962,6 @@
 
         .recipe-content {
             padding: 1.5rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
 
         .recipe-title {
@@ -614,7 +974,6 @@
         .recipe-meta {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 1.5rem;
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
@@ -623,6 +982,137 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .fusion-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--fusion-gradient);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .suggested-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--suggested-gradient);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .suggestion-note {
+            background-color: rgba(243, 156, 18, 0.1);
+            border-left: 4px solid #f39c12;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .suggestion-note i {
+            color: #f39c12;
+            font-size: 1.2rem;
+        }
+
+        /* Recipe Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-header {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .modal-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .modal-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
         /* Nutrition Badge Styles */
@@ -634,7 +1124,7 @@
             border: 1px solid rgba(156, 39, 176, 0.3);
             padding: 0.5rem 0.75rem;
             border-radius: 8px;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .nutrition-badge i {
@@ -685,7 +1175,6 @@
         }
 
         .recipe-details {
-            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
@@ -758,46 +1247,6 @@
             font-size: 0.8rem;
         }
 
-        .fusion-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--fusion-gradient);
-            color: white;
-            padding: 0.3rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .suggested-indicator {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--suggested-gradient);
-            color: white;
-            padding: 0.3rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .suggestion-note {
-            background-color: rgba(243, 156, 18, 0.1);
-            border-left: 4px solid #f39c12;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .suggestion-note i {
-            color: #f39c12;
-            font-size: 1.2rem;
-        }
-
         /* Nutrition Summary Section */
         .nutrition-summary {
             background: linear-gradient(135deg, rgba(156, 39, 176, 0.1), rgba(76, 175, 80, 0.1));
@@ -861,6 +1310,210 @@
             color: var(--fat-color);
         }
 
+        /* Admin Dashboard Styles */
+        .admin-dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .admin-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .admin-section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .admin-section-title i {
+            color: var(--secondary-color);
+        }
+
+        .admin-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .admin-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .admin-tab.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .admin-tab-content {
+            display: none;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+        }
+
+        .recipe-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group.half-width {
+            grid-column: span 1;
+        }
+
+        .ingredients-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ingredient-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .ingredient-row input {
+            flex: 1;
+        }
+
+        .btn-remove {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove:hover {
+            background-color: #d63851;
+        }
+
+        .btn-add {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .btn-add:hover {
+            background-color: #3bb5ac;
+        }
+
+        .category-list, .area-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .category-item, .area-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-item i, .area-item i {
+            color: var(--primary-color);
+        }
+
+        .message-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .message-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .message-list {
+            margin-top: 2rem;
+        }
+
+        .message-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .message-date {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+
+        .btn-delete {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background-color: #d63851;
+        }
+
         footer {
             background-color: var(--card-bg);
             padding: 1.5rem 2rem;
@@ -887,6 +1540,28 @@
             .nutrition-macros {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .recipe-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.half-width {
+                grid-column: span 1;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            .subscription-dropdown {
+                width: 300px;
+            }
+
+            .auth-type-selector {
+                flex-direction: column;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
@@ -900,6 +1575,19 @@
             </div>
             <div class="landing-subtitle">Recipe Fusion Engine</div>
             <p class="landing-description">Discover unique fusion recipes by combining different cuisines and categories. Create culinary masterpieces with our intelligent recipe fusion engine.</p>
+        </div>
+
+        <div class="auth-type-selector">
+            <div class="auth-type-card active" id="userTypeCard">
+                <i class="fas fa-user"></i>
+                <h3>User</h3>
+                <p>Explore recipes and find your perfect fusion dish</p>
+            </div>
+            <div class="auth-type-card" id="adminTypeCard">
+                <i class="fas fa-user-shield"></i>
+                <h3>Admin</h3>
+                <p>Manage recipes, categories, and send messages to users</p>
+            </div>
         </div>
 
         <div class="auth-container">
@@ -960,9 +1648,13 @@
                 <span id="authFooterText">Don't have an account? <a href="#" id="authFooterLink">Register</a></span>
             </div>
         </div>
+
+        <button class="return-btn" id="returnBtn" style="display: none;">
+            <i class="fas fa-arrow-left"></i>
+        </button>
     </div>
 
-    <!-- Main App (hidden by default) -->
+    <!-- Main User App (hidden by default) -->
     <div class="main-app" id="mainApp">
         <header>
             <div class="header-content">
@@ -974,6 +1666,159 @@
                     </div>
                 </div>
                 <div class="user-menu">
+                    <div class="header-icon" id="messageBell">
+                        <i class="fas fa-bell"></i>
+                        <div class="badge" id="messageBadge" style="display: none;">0</div>
+                        <div class="dropdown" id="messageDropdown">
+                            <div class="dropdown-header">
+                                <div class="dropdown-title">Messages & Offers</div>
+                                <button class="dropdown-close" id="messageDropdownClose">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="dropdown-content" id="messageDropdownContent">
+                                <!-- Messages will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-icon" id="subscriptionBell">
+                        <i class="fas fa-crown"></i>
+                        <div class="dropdown subscription-dropdown" id="subscriptionDropdown">
+                            <div class="dropdown-header">
+                                <div class="dropdown-title">Subscription Plans</div>
+                                <button class="dropdown-close" id="subscriptionDropdownClose">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="dropdown-content">
+                                <div class="current-plan-info" id="currentPlan">
+                                    <div class="current-plan-details">
+                                        <i class="fas fa-gift"></i>
+                                        <div>
+                                            <h3>Free Plan</h3>
+                                            <p>2 recipes per day</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span id="recipesRemaining">2 recipes remaining today</span>
+                                    </div>
+                                </div>
+
+                                <div class="subscription-plans">
+                                    <div class="subscription-plan">
+                                        <div class="plan-header">
+                                            <div class="plan-name">Starter</div>
+                                            <div class="plan-price">₹20</div>
+                                        </div>
+                                        <div class="plan-duration">Valid for 10 days</div>
+                                        <div class="plan-features">
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>10 recipes</span>
+                                            </div>
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Access to all categories</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn-subscribe" data-plan="starter" data-price="20" data-duration="10">Subscribe</button>
+                                    </div>
+                                    
+                                    <div class="subscription-plan featured">
+                                        <div class="plan-header">
+                                            <div class="plan-name">Monthly</div>
+                                            <div class="plan-price">₹50</div>
+                                        </div>
+                                        <div class="plan-duration">1 month</div>
+                                        <div class="plan-features">
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Unlimited recipes</span>
+                                            </div>
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Access to all categories</span>
+                                            </div>
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Priority support</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn-subscribe" data-plan="monthly" data-price="50" data-duration="30">Subscribe</button>
+                                    </div>
+                                    
+                                    <div class="subscription-plan">
+                                        <div class="plan-header">
+                                            <div class="plan-name">Quarterly</div>
+                                            <div class="plan-price">₹120</div>
+                                        </div>
+                                        <div class="plan-duration">3 months</div>
+                                        <div class="plan-features">
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Unlimited recipes</span>
+                                            </div>
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Access to all categories</span>
+                                            </div>
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Save 20%</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn-subscribe" data-plan="quarterly" data-price="120" data-duration="90">Subscribe</button>
+                                    </div>
+                                    
+                                    <div class="subscription-plan">
+                                        <div class="plan-header">
+                                            <div class="plan-name">Half Yearly</div>
+                                            <div class="plan-price">₹200</div>
+                                        </div>
+                                        <div class="plan-duration">6 months</div>
+                                        <div class="plan-features">
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Unlimited recipes</span>
+                                            </div>
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Access to all categories</span>
+                                            </div>
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Save 33%</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn-subscribe" data-plan="halfyearly" data-price="200" data-duration="180">Subscribe</button>
+                                    </div>
+                                    
+                                    <div class="subscription-plan">
+                                        <div class="plan-header">
+                                            <div class="plan-name">Annual</div>
+                                            <div class="plan-price">₹450</div>
+                                        </div>
+                                        <div class="plan-duration">12 months + 1 month free</div>
+                                        <div class="plan-features">
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Unlimited recipes</span>
+                                            </div>
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Access to all categories</span>
+                                            </div>
+                                            <div class="plan-feature">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Save 25% + 1 month free</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn-subscribe" data-plan="annual" data-price="450" data-duration="390">Subscribe</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="user-info">
                         <div class="user-avatar" id="userAvatar">U</div>
                         <div class="user-name" id="userName">User</div>
@@ -987,6 +1832,7 @@
         </header>
 
         <main>
+            <!-- Search Section -->
             <section class="search-section">
                 <h2 class="search-title">
                     <i class="fas fa-search"></i>
@@ -1063,7 +1909,273 @@
         </main>
 
         <footer>
-            <p>© 2023 Recipe Fusion Engine | Powered by TheMealDB API</p>
+            <p>© 2023 Recipe Fusion Engine | Powered by Admin Recipe Management</p>
+        </footer>
+    </div>
+
+    <!-- Recipe Modal -->
+    <div class="modal" id="recipeModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <img id="modalRecipeImage" src="" alt="">
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modalRecipeTitle"></h2>
+                <div class="modal-meta">
+                    <div class="recipe-category">
+                        <i class="fas fa-tag"></i>
+                        <span id="modalRecipeCategory"></span>
+                    </div>
+                    <div class="recipe-area">
+                        <i class="fas fa-globe"></i>
+                        <span id="modalRecipeArea"></span>
+                    </div>
+                </div>
+                
+                <!-- Nutrition Badge -->
+                <div class="nutrition-badge">
+                    <i class="fas fa-fire"></i>
+                    <div class="nutrition-info">
+                        <span class="calories-value" id="modalCaloriesValue"></span>
+                        <span class="calories-label">cal</span>
+                    </div>
+                    <div class="nutrition-details">
+                        <div class="nutrition-item protein">
+                            <i class="fas fa-drumstick-bite"></i>
+                            <span id="modalProteinValue"></span>g
+                        </div>
+                        <div class="nutrition-item carbs">
+                            <i class="fas fa-bread-slice"></i>
+                            <span id="modalCarbsValue"></span>g
+                        </div>
+                        <div class="nutrition-item fat">
+                            <i class="fas fa-cheese"></i>
+                            <span id="modalFatValue"></span>g
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recipe-details">
+                    <div class="nutrition-summary" id="modalNutritionSummary">
+                        <!-- Nutrition summary will be added here -->
+                    </div>
+                    
+                    <div class="recipe-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-list"></i>
+                            Ingredients
+                        </h3>
+                        <div class="ingredients-list" id="modalIngredientsList">
+                            <!-- Ingredients will be added here -->
+                        </div>
+                    </div>
+                    <div class="recipe-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-tasks"></i>
+                            Instructions
+                        </h3>
+                        <div class="instructions-list" id="modalInstructionsList">
+                            <!-- Instructions will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin App (hidden by default) -->
+    <div class="admin-app" id="adminApp">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    <div>
+                        <h1>What's for Dinner</h1>
+                        <div class="subtitle">Admin Dashboard</div>
+                    </div>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-avatar" id="adminAvatar">A</div>
+                        <div class="user-name" id="adminName">Admin</div>
+                    </div>
+                    <button class="btn btn-logout" id="adminLogoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="admin-dashboard">
+                <div class="admin-section">
+                    <h2 class="admin-section-title">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Admin Dashboard
+                    </h2>
+                    
+                    <div class="admin-tabs">
+                        <div class="admin-tab active" data-tab="recipes">Recipes</div>
+                        <div class="admin-tab" data-tab="categories">Categories</div>
+                        <div class="admin-tab" data-tab="areas">Cuisines</div>
+                        <div class="admin-tab" data-tab="messages">Messages</div>
+                    </div>
+                    
+                    <!-- Recipes Tab -->
+                    <div class="admin-tab-content active" id="recipes-tab">
+                        <h3>Add New Recipe</h3>
+                        <form class="recipe-form" id="recipeForm">
+                            <div class="form-group full-width">
+                                <label for="recipeName">Recipe Name</label>
+                                <input type="text" id="recipeName" class="form-control" placeholder="Enter recipe name" required>
+                            </div>
+                            
+                            <div class="form-group half-width">
+                                <label for="recipeCategory">Category</label>
+                                <select id="recipeCategory" class="form-control" required>
+                                    <option value="">Select a category</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group half-width">
+                                <label for="recipeArea">Cuisine</label>
+                                <select id="recipeArea" class="form-control" required>
+                                    <option value="">Select a cuisine</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="recipeImage">Image URL</label>
+                                <input type="text" id="recipeImage" class="form-control" placeholder="Enter image URL">
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="recipeInstructions">Instructions</label>
+                                <textarea id="recipeInstructions" class="form-control" rows="5" placeholder="Enter cooking instructions" required></textarea>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label>Ingredients</label>
+                                <div class="ingredients-container" id="ingredientsContainer">
+                                    <div class="ingredient-row">
+                                        <input type="text" class="form-control ingredient-name" placeholder="Ingredient name">
+                                        <input type="text" class="form-control ingredient-measure" placeholder="Measure">
+                                        <button type="button" class="btn-remove"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-add" id="addIngredientBtn">
+                                    <i class="fas fa-plus"></i>
+                                    Add Ingredient
+                                </button>
+                            </div>
+                            
+                            <div class="form-group half-width">
+                                <label for="recipeCalories">Calories</label>
+                                <input type="number" id="recipeCalories" class="form-control" placeholder="Enter calories">
+                            </div>
+                            
+                            <div class="form-group half-width">
+                                <label for="recipeProtein">Protein (g)</label>
+                                <input type="number" id="recipeProtein" class="form-control" placeholder="Enter protein">
+                            </div>
+                            
+                            <div class="form-group half-width">
+                                <label for="recipeCarbs">Carbs (g)</label>
+                                <input type="number" id="recipeCarbs" class="form-control" placeholder="Enter carbs">
+                            </div>
+                            
+                            <div class="form-group half-width">
+                                <label for="recipeFat">Fat (g)</label>
+                                <input type="number" id="recipeFat" class="form-control" placeholder="Enter fat">
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    Save Recipe
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <h3 style="margin-top: 2rem;">Existing Recipes</h3>
+                        <div id="recipesList">
+                            <!-- Recipes will be dynamically added here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Categories Tab -->
+                    <div class="admin-tab-content" id="categories-tab">
+                        <h3>Manage Categories</h3>
+                        <form id="categoryForm">
+                            <div class="form-group">
+                                <label for="newCategory">New Category</label>
+                                <input type="text" id="newCategory" class="form-control" placeholder="Enter category name" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Add Category
+                            </button>
+                        </form>
+                        
+                        <h3 style="margin-top: 2rem;">Existing Categories</h3>
+                        <div class="category-list" id="categoryList">
+                            <!-- Categories will be dynamically added here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Areas Tab -->
+                    <div class="admin-tab-content" id="areas-tab">
+                        <h3>Manage Cuisines</h3>
+                        <form id="areaForm">
+                            <div class="form-group">
+                                <label for="newArea">New Cuisine</label>
+                                <input type="text" id="newArea" class="form-control" placeholder="Enter cuisine name" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Add Cuisine
+                            </button>
+                        </form>
+                        
+                        <h3 style="margin-top: 2rem;">Existing Cuisines</h3>
+                        <div class="area-list" id="areaList">
+                            <!-- Areas will be dynamically added here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Messages Tab -->
+                    <div class="admin-tab-content" id="messages-tab">
+                        <h3>Send Message to Users</h3>
+                        <form class="message-form" id="messageForm">
+                            <div class="form-group">
+                                <label for="messageTitle">Message Title</label>
+                                <input type="text" id="messageTitle" class="form-control" placeholder="Enter message title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="messageContent">Message Content</label>
+                                <textarea id="messageContent" class="form-control" rows="5" placeholder="Enter message content" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                                Send Message
+                            </button>
+                        </form>
+                        
+                        <h3 style="margin-top: 2rem;">Sent Messages</h3>
+                        <div class="message-list" id="messageList">
+                            <!-- Messages will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2023 Recipe Fusion Engine | Admin Dashboard</p>
         </footer>
     </div>
 
@@ -1277,6 +2389,8 @@
         class AuthManager {
             constructor() {
                 this.currentUser = null;
+                this.currentAdmin = null;
+                this.authType = 'user'; // 'user' or 'admin'
                 this.init();
             }
 
@@ -1285,7 +2399,16 @@
                 const userData = localStorage.getItem('currentUser');
                 if (userData) {
                     this.currentUser = JSON.parse(userData);
+                    this.authType = 'user';
                     this.showMainApp();
+                }
+                
+                // Check if admin is already logged in
+                const adminData = localStorage.getItem('currentAdmin');
+                if (adminData) {
+                    this.currentAdmin = JSON.parse(adminData);
+                    this.authType = 'admin';
+                    this.showAdminApp();
                 }
             }
 
@@ -1304,11 +2427,42 @@
                     id: Date.now().toString(),
                     name,
                     email,
-                    password // In a real app, this would be hashed
+                    password, // In a real app, this would be hashed
+                    subscription: {
+                        plan: 'free',
+                        startDate: new Date().toISOString(),
+                        endDate: null,
+                        recipesViewedToday: 0,
+                        lastViewDate: new Date().toDateString()
+                    }
                 };
                 
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
+                
+                return { success: true, message: 'Registration successful' };
+            }
+
+            // Register a new admin
+            registerAdmin(name, email, password) {
+                // Get existing admins
+                const admins = JSON.parse(localStorage.getItem('admins') || '[]');
+                
+                // Check if email already exists
+                if (admins.find(admin => admin.email === email)) {
+                    return { success: false, message: 'Email already registered' };
+                }
+                
+                // Add new admin
+                const newAdmin = {
+                    id: Date.now().toString(),
+                    name,
+                    email,
+                    password // In a real app, this would be hashed
+                };
+                
+                admins.push(newAdmin);
+                localStorage.setItem('admins', JSON.stringify(admins));
                 
                 return { success: true, message: 'Registration successful' };
             }
@@ -1336,6 +2490,29 @@
                 return { success: true, message: 'Sign in successful' };
             }
 
+            // Sign in admin
+            signinAdmin(email, password) {
+                const admins = JSON.parse(localStorage.getItem('admins') || '[]');
+                
+                // Find admin by email
+                const admin = admins.find(admin => admin.email === email);
+                
+                if (!admin) {
+                    return { success: false, message: 'Admin not found' };
+                }
+                
+                // Check password
+                if (admin.password !== password) {
+                    return { success: false, message: 'Incorrect password' };
+                }
+                
+                // Set current admin
+                this.currentAdmin = admin;
+                localStorage.setItem('currentAdmin', JSON.stringify(admin));
+                
+                return { success: true, message: 'Sign in successful' };
+            }
+
             // Logout user
             logout() {
                 this.currentUser = null;
@@ -1343,15 +2520,39 @@
                 this.showLandingPage();
             }
 
+            // Logout admin
+            logoutAdmin() {
+                this.currentAdmin = null;
+                localStorage.removeItem('currentAdmin');
+                this.showLandingPage();
+            }
+
             // Show main app
             showMainApp() {
                 document.getElementById('landingPage').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
+                document.getElementById('adminApp').style.display = 'none';
                 
                 // Update user info in header
                 if (this.currentUser) {
                     document.getElementById('userName').textContent = this.currentUser.name;
                     document.getElementById('userAvatar').textContent = this.currentUser.name.charAt(0).toUpperCase();
+                    
+                    // Update subscription info
+                    this.updateSubscriptionInfo();
+                }
+            }
+
+            // Show admin app
+            showAdminApp() {
+                document.getElementById('landingPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'none';
+                document.getElementById('adminApp').style.display = 'block';
+                
+                // Update admin info in header
+                if (this.currentAdmin) {
+                    document.getElementById('adminName').textContent = this.currentAdmin.name;
+                    document.getElementById('adminAvatar').textContent = this.currentAdmin.name.charAt(0).toUpperCase();
                 }
             }
 
@@ -1359,6 +2560,99 @@
             showLandingPage() {
                 document.getElementById('landingPage').style.display = 'flex';
                 document.getElementById('mainApp').style.display = 'none';
+                document.getElementById('adminApp').style.display = 'none';
+            }
+
+            // Update subscription info
+            updateSubscriptionInfo() {
+                if (!this.currentUser) return;
+                
+                const subscription = this.currentUser.subscription;
+                const today = new Date().toDateString();
+                
+                // Reset daily counter if it's a new day
+                if (subscription.lastViewDate !== today) {
+                    subscription.recipesViewedToday = 0;
+                    subscription.lastViewDate = today;
+                    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                }
+                
+                // Update UI based on subscription
+                const currentPlanElement = document.getElementById('currentPlan');
+                const recipesRemainingElement = document.getElementById('recipesRemaining');
+                
+                if (subscription.plan === 'free') {
+                    const remaining = Math.max(0, 2 - subscription.recipesViewedToday);
+                    currentPlanElement.querySelector('h3').textContent = 'Free Plan';
+                    currentPlanElement.querySelector('p').textContent = '2 recipes per day';
+                    recipesRemainingElement.textContent = `${remaining} recipe${remaining !== 1 ? 's' : ''} remaining today`;
+                } else {
+                    const endDate = new Date(subscription.endDate);
+                    const formattedDate = endDate.toLocaleDateString();
+                    
+                    currentPlanElement.querySelector('h3').textContent = `${subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1)} Plan`;
+                    currentPlanElement.querySelector('p').textContent = `Valid until ${formattedDate}`;
+                    recipesRemainingElement.textContent = 'Unlimited recipes';
+                }
+            }
+
+            // Check if user can view more recipes
+            canViewRecipe() {
+                if (!this.currentUser) return false;
+                
+                const subscription = this.currentUser.subscription;
+                
+                if (subscription.plan === 'free') {
+                    const today = new Date().toDateString();
+                    
+                    // Reset daily counter if it's a new day
+                    if (subscription.lastViewDate !== today) {
+                        subscription.recipesViewedToday = 0;
+                        subscription.lastViewDate = today;
+                        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                    }
+                    
+                    return subscription.recipesViewedToday < 2;
+                } else {
+                    // Check if subscription is still valid
+                    const now = new Date();
+                    const endDate = new Date(subscription.endDate);
+                    return now <= endDate;
+                }
+            }
+
+            // Increment recipe view count
+            incrementRecipeView() {
+                if (!this.currentUser) return;
+                
+                const subscription = this.currentUser.subscription;
+                
+                if (subscription.plan === 'free') {
+                    subscription.recipesViewedToday++;
+                    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                    this.updateSubscriptionInfo();
+                }
+            }
+
+            // Subscribe to a plan
+            subscribe(plan, price, duration) {
+                if (!this.currentUser) return { success: false, message: 'User not logged in' };
+                
+                const now = new Date();
+                const endDate = new Date(now.getTime() + (duration * 24 * 60 * 60 * 1000));
+                
+                this.currentUser.subscription = {
+                    plan: plan,
+                    startDate: now.toISOString(),
+                    endDate: endDate.toISOString(),
+                    recipesViewedToday: 0,
+                    lastViewDate: now.toDateString()
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+                this.updateSubscriptionInfo();
+                
+                return { success: true, message: `Successfully subscribed to ${plan} plan` };
             }
         }
 
@@ -1368,17 +2662,355 @@
                 this.recipes = new Map(); // Map of recipeId -> recipe details
                 this.categoryRecipes = new Map(); // Map of category -> Set of recipeIds
                 this.areaRecipes = new Map(); // Map of area -> Set of recipeIds
-                this.popularRecipes = []; // Array of popular recipes
+                this.categories = new Set(); // Set of all categories
+                this.areas = new Set(); // Set of all areas
+                this.messages = []; // Array of messages
+                this.init();
+            }
+
+            init() {
+                // Load data from localStorage
+                this.loadData();
+                
+                // If no data exists, initialize with sample data
+                if (this.recipes.size === 0) {
+                    this.initializeSampleData();
+                }
+            }
+
+            // Load data from localStorage
+            loadData() {
+                // Load recipes
+                const recipesData = localStorage.getItem('recipes');
+                if (recipesData) {
+                    const recipes = JSON.parse(recipesData);
+                    recipes.forEach(recipe => {
+                        this.recipes.set(recipe.idMeal, recipe);
+                        this.categoryRecipes.set(recipe.strCategory, new Set());
+                        this.areaRecipes.set(recipe.strArea, new Set());
+                        this.categories.add(recipe.strCategory);
+                        this.areas.add(recipe.strArea);
+                    });
+                    
+                    // Rebuild indexes
+                    recipes.forEach(recipe => {
+                        this.categoryRecipes.get(recipe.strCategory).add(recipe.idMeal);
+                        this.areaRecipes.get(recipe.strArea).add(recipe.idMeal);
+                    });
+                }
+                
+                // Load categories
+                const categoriesData = localStorage.getItem('categories');
+                if (categoriesData) {
+                    const categories = JSON.parse(categoriesData);
+                    categories.forEach(category => this.categories.add(category));
+                }
+                
+                // Load areas
+                const areasData = localStorage.getItem('areas');
+                if (areasData) {
+                    const areas = JSON.parse(areasData);
+                    areas.forEach(area => this.areas.add(area));
+                }
+                
+                // Load messages
+                const messagesData = localStorage.getItem('messages');
+                if (messagesData) {
+                    this.messages = JSON.parse(messagesData);
+                }
+            }
+
+            // Save data to localStorage
+            saveData() {
+                // Save recipes
+                const recipes = Array.from(this.recipes.values());
+                localStorage.setItem('recipes', JSON.stringify(recipes));
+                
+                // Save categories
+                const categories = Array.from(this.categories);
+                localStorage.setItem('categories', JSON.stringify(categories));
+                
+                // Save areas
+                const areas = Array.from(this.areas);
+                localStorage.setItem('areas', JSON.stringify(areas));
+                
+                // Save messages
+                localStorage.setItem('messages', JSON.stringify(this.messages));
+            }
+
+            // Initialize with sample data
+            initializeSampleData() {
+                // Add sample categories
+                const sampleCategories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack'];
+                sampleCategories.forEach(category => this.categories.add(category));
+                
+                // Add sample areas
+                const sampleAreas = ['Indian', 'Italian', 'Chinese', 'Mexican', 'American'];
+                sampleAreas.forEach(area => this.areas.add(area));
+                
+                // Add sample recipes
+                const sampleRecipes = [
+                    {
+                        idMeal: '1',
+                        strMeal: 'Chicken Tikka Masala',
+                        strCategory: 'Dinner',
+                        strArea: 'Indian',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/syt7q41615552591.jpg',
+                        strInstructions: 'Mix chicken with yogurt and spices. Marinate for 2 hours. Grill chicken until cooked. Prepare sauce with tomatoes, cream, and spices. Add grilled chicken to sauce. Simmer for 15 minutes. Serve with rice or naan.',
+                        ingredients: [
+                            { name: 'Chicken', measure: '500g' },
+                            { name: 'Yogurt', measure: '1 cup' },
+                            { name: 'Tomatoes', measure: '400g' },
+                            { name: 'Cream', measure: '200ml' },
+                            { name: 'Garam Masala', measure: '2 tsp' },
+                            { name: 'Ginger', measure: '1 inch' },
+                            { name: 'Garlic', measure: '4 cloves' }
+                        ],
+                        nutrition: {
+                            calories: 350,
+                            protein: 30,
+                            carbs: 15,
+                            fat: 20
+                        }
+                    },
+                    {
+                        idMeal: '2',
+                        strMeal: 'Spaghetti Carbonara',
+                        strCategory: 'Dinner',
+                        strArea: 'Italian',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',
+                        strInstructions: 'Cook spaghetti according to package directions. In a large skillet, cook pancetta until crispy. In a bowl, whisk eggs and cheese. Drain pasta and add to skillet with pancetta. Remove from heat and add egg mixture, tossing quickly. Season with pepper and serve immediately.',
+                        ingredients: [
+                            { name: 'Spaghetti', measure: '400g' },
+                            { name: 'Pancetta', measure: '200g' },
+                            { name: 'Eggs', measure: '4' },
+                            { name: 'Parmesan', measure: '100g' },
+                            { name: 'Black Pepper', measure: '1 tsp' }
+                        ],
+                        nutrition: {
+                            calories: 420,
+                            protein: 25,
+                            carbs: 45,
+                            fat: 18
+                        }
+                    },
+                    {
+                        idMeal: '3',
+                        strMeal: 'Sweet and Sour Pork',
+                        strCategory: 'Dinner',
+                        strArea: 'Chinese',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/1529444113.jpg',
+                        strInstructions: 'Cut pork into bite-sized pieces and marinate. Coat with cornstarch and fry until golden. In a wok, stir-fry vegetables. Add sauce ingredients and bring to a boil. Add fried pork and toss to coat. Serve with rice.',
+                        ingredients: [
+                            { name: 'Pork', measure: '500g' },
+                            { name: 'Pineapple', measure: '1 cup' },
+                            { name: 'Bell Pepper', measure: '1' },
+                            { name: 'Vinegar', measure: '3 tbsp' },
+                            { name: 'Sugar', measure: '3 tbsp' },
+                            { name: 'Soy Sauce', measure: '2 tbsp' }
+                        ],
+                        nutrition: {
+                            calories: 380,
+                            protein: 28,
+                            carbs: 35,
+                            fat: 15
+                        }
+                    },
+                    {
+                        idMeal: '4',
+                        strMeal: 'Chicken Tacos',
+                        strCategory: 'Dinner',
+                        strArea: 'Mexican',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/tyysvw1504629464.jpg',
+                        strInstructions: 'Season chicken with spices and grill until cooked. Slice into strips. Warm tortillas. Fill tortillas with chicken, salsa, cheese, and toppings. Serve with lime wedges.',
+                        ingredients: [
+                            { name: 'Chicken', measure: '500g' },
+                            { name: 'Tortillas', measure: '8' },
+                            { name: 'Cheese', measure: '200g' },
+                            { name: 'Lettuce', measure: '1 head' },
+                            { name: 'Tomatoes', measure: '2' },
+                            { name: 'Sour Cream', measure: '200ml' }
+                        ],
+                        nutrition: {
+                            calories: 320,
+                            protein: 30,
+                            carbs: 25,
+                            fat: 12
+                        }
+                    },
+                    {
+                        idMeal: '5',
+                        strMeal: 'Classic Burger',
+                        strCategory: 'Dinner',
+                        strArea: 'American',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/uyuyrr1511382809.jpg',
+                        strInstructions: 'Form ground beef into patties and season with salt and pepper. Grill or pan-fry until cooked through. Toast buns. Assemble burgers with patties, cheese, lettuce, tomato, and condiments. Serve with fries.',
+                        ingredients: [
+                            { name: 'Ground Beef', measure: '500g' },
+                            { name: 'Burger Buns', measure: '4' },
+                            { name: 'Cheese', measure: '4 slices' },
+                            { name: 'Lettuce', measure: '4 leaves' },
+                            { name: 'Tomato', measure: '1' },
+                            { name: 'Onion', measure: '1' }
+                        ],
+                        nutrition: {
+                            calories: 450,
+                            protein: 30,
+                            carbs: 30,
+                            fat: 22
+                        }
+                    },
+                    {
+                        idMeal: '6',
+                        strMeal: 'Paneer Butter Masala',
+                        strCategory: 'Dinner',
+                        strArea: 'Indian',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/vptpxx1511297858.jpg',
+                        strInstructions: 'Cut paneer into cubes and fry until golden. In a pan, heat butter and sauté onions, ginger, and garlic. Add tomatoes and spices, cook until thick. Add cream and fried paneer. Simmer for 10 minutes. Garnish with coriander and serve with naan or rice.',
+                        ingredients: [
+                            { name: 'Paneer', measure: '400g' },
+                            { name: 'Butter', measure: '4 tbsp' },
+                            { name: 'Onion', measure: '2' },
+                            { name: 'Tomatoes', measure: '4' },
+                            { name: 'Cream', measure: '200ml' },
+                            { name: 'Garam Masala', measure: '2 tsp' }
+                        ],
+                        nutrition: {
+                            calories: 380,
+                            protein: 18,
+                            carbs: 12,
+                            fat: 28
+                        }
+                    },
+                    {
+                        idMeal: '7',
+                        strMeal: 'Margherita Pizza',
+                        strCategory: 'Dinner',
+                        strArea: 'Italian',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/0jv5hx1511456739.jpg',
+                        strInstructions: 'Roll out pizza dough and place on a baking sheet. Spread tomato sauce evenly. Add mozzarella cheese and tomato slices. Drizzle with olive oil and season with salt and pepper. Bake at 220°C for 12-15 minutes until crust is golden. Garnish with fresh basil.',
+                        ingredients: [
+                            { name: 'Pizza Dough', measure: '1' },
+                            { name: 'Tomato Sauce', measure: '200ml' },
+                            { name: 'Mozzarella', measure: '200g' },
+                            { name: 'Tomatoes', measure: '2' },
+                            { name: 'Basil', measure: 'few leaves' },
+                            { name: 'Olive Oil', measure: '2 tbsp' }
+                        ],
+                        nutrition: {
+                            calories: 280,
+                            protein: 12,
+                            carbs: 35,
+                            fat: 10
+                        }
+                    },
+                    {
+                        idMeal: '8',
+                        strMeal: 'Fried Rice',
+                        strCategory: 'Dinner',
+                        strArea: 'Chinese',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/1529445434.jpg',
+                        strInstructions: 'Heat oil in a wok and scramble eggs. Add diced vegetables and stir-fry for 2-3 minutes. Add cooked rice and stir-fry for 3-4 minutes. Add soy sauce, oyster sauce, and white pepper. Mix well and serve hot.',
+                        ingredients: [
+                            { name: 'Cooked Rice', measure: '3 cups' },
+                            { name: 'Eggs', measure: '2' },
+                            { name: 'Carrots', measure: '1' },
+                            { name: 'Peas', measure: '1/2 cup' },
+                            { name: 'Soy Sauce', measure: '3 tbsp' },
+                            { name: 'Spring Onions', measure: '2' }
+                        ],
+                        nutrition: {
+                            calories: 320,
+                            protein: 10,
+                            carbs: 50,
+                            fat: 8
+                        }
+                    },
+                    {
+                        idMeal: '9',
+                        strMeal: 'Quesadilla',
+                        strCategory: 'Lunch',
+                        strArea: 'Mexican',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/qxtywq1505931186.jpg',
+                        strInstructions: 'Place a tortilla in a pan over medium heat. Sprinkle cheese and add fillings on one half. Fold the tortilla in half and cook until golden on both sides. Cut into wedges and serve with salsa and sour cream.',
+                        ingredients: [
+                            { name: 'Tortillas', measure: '4' },
+                            { name: 'Cheese', measure: '200g' },
+                            { name: 'Chicken', measure: '200g' },
+                            { name: 'Bell Peppers', measure: '1' },
+                            { name: 'Onion', measure: '1' },
+                            { name: 'Sour Cream', measure: '100ml' }
+                        ],
+                        nutrition: {
+                            calories: 350,
+                            protein: 25,
+                            carbs: 30,
+                            fat: 15
+                        }
+                    },
+                    {
+                        idMeal: '10',
+                        strMeal: 'Pancakes',
+                        strCategory: 'Breakfast',
+                        strArea: 'American',
+                        strMealThumb: 'https://www.themealdb.com/images/media/meals/rwuyqx1511383174.jpg',
+                        strInstructions: 'Mix flour, sugar, baking powder, and salt. In another bowl, whisk milk, egg, and melted butter. Combine wet and dry ingredients until just mixed. Pour batter onto a hot griddle and cook until bubbles form. Flip and cook until golden. Serve with maple syrup and butter.',
+                        ingredients: [
+                            { name: 'Flour', measure: '2 cups' },
+                            { name: 'Milk', measure: '1.5 cups' },
+                            { name: 'Eggs', measure: '2' },
+                            { name: 'Butter', measure: '3 tbsp' },
+                            { name: 'Sugar', measure: '2 tbsp' },
+                            { name: 'Baking Powder', measure: '2 tsp' }
+                        ],
+                        nutrition: {
+                            calories: 220,
+                            protein: 8,
+                            carbs: 35,
+                            fat: 6
+                        }
+                    }
+                ];
+                
+                // Add sample recipes to data manager
+                sampleRecipes.forEach(recipe => {
+                    this.addRecipe(recipe);
+                });
+                
+                // Save data to localStorage
+                this.saveData();
             }
 
             // Store recipe details
             addRecipe(recipe) {
                 this.recipes.set(recipe.idMeal, recipe);
+                
+                // Update indexes
+                if (!this.categoryRecipes.has(recipe.strCategory)) {
+                    this.categoryRecipes.set(recipe.strCategory, new Set());
+                }
+                this.categoryRecipes.get(recipe.strCategory).add(recipe.idMeal);
+                
+                if (!this.areaRecipes.has(recipe.strArea)) {
+                    this.areaRecipes.set(recipe.strArea, new Set());
+                }
+                this.areaRecipes.get(recipe.strArea).add(recipe.idMeal);
+                
+                this.categories.add(recipe.strCategory);
+                this.areas.add(recipe.strArea);
+                
+                // Save to localStorage
+                this.saveData();
             }
 
             // Get recipe details
             getRecipe(id) {
                 return this.recipes.get(id);
+            }
+
+            // Get all recipes
+            getAllRecipes() {
+                return Array.from(this.recipes.values());
             }
 
             // Add recipe to category index
@@ -1419,6 +3051,83 @@
             getAreaRecipes(area) {
                 const areaIds = this.areaRecipes.get(area) || new Set();
                 return [...areaIds].map(id => this.recipes.get(id)).filter(Boolean);
+            }
+
+            // Get all categories
+            getCategories() {
+                return Array.from(this.categories);
+            }
+
+            // Get all areas
+            getAreas() {
+                return Array.from(this.areas);
+            }
+
+            // Add category
+            addCategory(category) {
+                this.categories.add(category);
+                this.saveData();
+            }
+
+            // Add area
+            addArea(area) {
+                this.areas.add(area);
+                this.saveData();
+            }
+
+            // Delete recipe
+            deleteRecipe(id) {
+                const recipe = this.recipes.get(id);
+                if (!recipe) return false;
+                
+                // Remove from recipes
+                this.recipes.delete(id);
+                
+                // Remove from category index
+                if (this.categoryRecipes.has(recipe.strCategory)) {
+                    this.categoryRecipes.get(recipe.strCategory).delete(id);
+                }
+                
+                // Remove from area index
+                if (this.areaRecipes.has(recipe.strArea)) {
+                    this.areaRecipes.get(recipe.strArea).delete(id);
+                }
+                
+                // Save to localStorage
+                this.saveData();
+                
+                return true;
+            }
+
+            // Add message
+            addMessage(title, content) {
+                const message = {
+                    id: Date.now().toString(),
+                    title,
+                    content,
+                    date: new Date().toISOString()
+                };
+                
+                this.messages.push(message);
+                this.saveData();
+                
+                return message;
+            }
+
+            // Get messages
+            getMessages() {
+                return this.messages;
+            }
+
+            // Delete message
+            deleteMessage(id) {
+                const index = this.messages.findIndex(msg => msg.id === id);
+                if (index !== -1) {
+                    this.messages.splice(index, 1);
+                    this.saveData();
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -1463,93 +3172,9 @@
             }
         }
 
-        // API Service - Using Promise.all for concurrent API calls
-        class ApiService {
-            constructor() {
-                this.baseUrl = 'https://www.themealdb.com/api/json/v1/1/';
-            }
-
-            // Fetch categories
-            async fetchCategories() {
-                const response = await fetch(`${this.baseUrl}categories.php`);
-                return response.json();
-            }
-
-            // Fetch areas
-            async fetchAreas() {
-                const response = await fetch(`${this.baseUrl}list.php?a=list`);
-                return response.json();
-            }
-
-            // Fetch recipes by category
-            async fetchRecipesByCategory(category) {
-                const response = await fetch(`${this.baseUrl}filter.php?c=${category}`);
-                return response.json();
-            }
-
-            // Fetch recipes by area
-            async fetchRecipesByArea(area) {
-                const response = await fetch(`${this.baseUrl}filter.php?a=${area}`);
-                return response.json();
-            }
-
-            // Fetch recipe details
-            async fetchRecipeDetails(id) {
-                const response = await fetch(`${this.baseUrl}lookup.php?i=${id}`);
-                return response.json();
-            }
-
-            // Fetch popular recipes
-            async fetchPopularRecipes() {
-                const response = await fetch(`${this.baseUrl}search.php?s=`);
-                return response.json();
-            }
-
-            // Fetch multiple recipe details concurrently using Promise.all
-            async fetchMultipleRecipeDetails(ids) {
-                const promises = ids.map(id => this.fetchRecipeDetails(id));
-                const results = await Promise.all(promises);
-                return results.map(result => result.meals ? result.meals[0] : null).filter(Boolean);
-            }
-
-            // Fetch recipes from multiple areas concurrently
-            async fetchRecipesFromMultipleAreas(category, areas) {
-                const promises = areas.map(area => this.fetchRecipesByCategoryAndArea(category, area));
-                const results = await Promise.all(promises);
-                
-                // Combine all meals from different areas
-                const allMeals = [];
-                results.forEach((data, index) => {
-                    if (data.meals) {
-                        // Add area information to each meal
-                        const mealsWithArea = data.meals.map(meal => ({
-                            ...meal,
-                            fusionArea: areas[index]
-                        }));
-                        allMeals.push(...mealsWithArea);
-                    }
-                });
-                
-                return allMeals;
-            }
-
-            // Fetch recipes by category and area
-            async fetchRecipesByCategoryAndArea(category, area) {
-                // Note: TheMealDB API doesn't support filtering by both category and area in one call
-                // So we'll use a workaround
-                const [categoryData, areaData] = await Promise.all([
-                    this.fetchRecipesByCategory(category),
-                    this.fetchRecipesByArea(area)
-                ]);
-                
-                return {
-                    category: categoryData.meals || [],
-                    area: areaData.meals || []
-                };
-            }
-        }
-
         // DOM Elements for Authentication
+        const userTypeCard = document.getElementById('userTypeCard');
+        const adminTypeCard = document.getElementById('adminTypeCard');
         const signinTab = document.getElementById('signinTab');
         const registerTab = document.getElementById('registerTab');
         const signinForm = document.getElementById('signinForm');
@@ -1557,6 +3182,8 @@
         const authFooterText = document.getElementById('authFooterText');
         const authFooterLink = document.getElementById('authFooterLink');
         const logoutBtn = document.getElementById('logoutBtn');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+        const returnBtn = document.getElementById('returnBtn');
 
         // DOM Elements for Main App
         const categorySelect = document.getElementById('categorySelect');
@@ -1573,17 +3200,65 @@
         const notification = document.getElementById('notification');
         const notificationText = document.getElementById('notificationText');
 
+        // DOM Elements for Admin App
+        const adminTabs = document.querySelectorAll('.admin-tab');
+        const recipeForm = document.getElementById('recipeForm');
+        const categoryForm = document.getElementById('categoryForm');
+        const areaForm = document.getElementById('areaForm');
+        const messageForm = document.getElementById('messageForm');
+        const addIngredientBtn = document.getElementById('addIngredientBtn');
+        const ingredientsContainer = document.getElementById('ingredientsContainer');
+
+        // DOM Elements for Header Icons
+        const messageBell = document.getElementById('messageBell');
+        const messageBadge = document.getElementById('messageBadge');
+        const messageDropdown = document.getElementById('messageDropdown');
+        const messageDropdownClose = document.getElementById('messageDropdownClose');
+        const messageDropdownContent = document.getElementById('messageDropdownContent');
+        
+        const subscriptionBell = document.getElementById('subscriptionBell');
+        const subscriptionDropdown = document.getElementById('subscriptionDropdown');
+        const subscriptionDropdownClose = document.getElementById('subscriptionDropdownClose');
+
+        // DOM Elements for Recipe Modal
+        const recipeModal = document.getElementById('recipeModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalRecipeImage = document.getElementById('modalRecipeImage');
+        const modalRecipeTitle = document.getElementById('modalRecipeTitle');
+        const modalRecipeCategory = document.getElementById('modalRecipeCategory');
+        const modalRecipeArea = document.getElementById('modalRecipeArea');
+        const modalCaloriesValue = document.getElementById('modalCaloriesValue');
+        const modalProteinValue = document.getElementById('modalProteinValue');
+        const modalCarbsValue = document.getElementById('modalCarbsValue');
+        const modalFatValue = document.getElementById('modalFatValue');
+        const modalNutritionSummary = document.getElementById('modalNutritionSummary');
+        const modalIngredientsList = document.getElementById('modalIngredientsList');
+        const modalInstructionsList = document.getElementById('modalInstructionsList');
+
         // Initialize services and managers
         const authManager = new AuthManager();
         const dataManager = new DataManager();
         const imageLoader = new ImageLoader();
-        const apiService = new ApiService();
         const nutritionCalculator = new NutritionCalculator();
 
         // Store all areas for fusion functionality
         let allAreas = [];
 
         // Authentication Event Listeners
+        userTypeCard.addEventListener('click', () => {
+            userTypeCard.classList.add('active');
+            adminTypeCard.classList.remove('active');
+            authManager.authType = 'user';
+            returnBtn.style.display = 'none';
+        });
+
+        adminTypeCard.addEventListener('click', () => {
+            adminTypeCard.classList.add('active');
+            userTypeCard.classList.remove('active');
+            authManager.authType = 'admin';
+            returnBtn.style.display = 'flex';
+        });
+
         signinTab.addEventListener('click', () => {
             signinTab.classList.add('active');
             registerTab.classList.remove('active');
@@ -1611,6 +3286,14 @@
         authFooterLink.addEventListener('click', (e) => {
             e.preventDefault();
             registerTab.click();
+        });
+
+        // Return button
+        returnBtn.addEventListener('click', () => {
+            userTypeCard.classList.add('active');
+            adminTypeCard.classList.remove('active');
+            authManager.authType = 'user';
+            returnBtn.style.display = 'none';
         });
 
         // Sign In Form Submission
@@ -1641,16 +3324,27 @@
             if (!isValid) return;
             
             // Attempt sign in
-            const result = authManager.signin(email, password);
-            
-            if (result.success) {
-                showNotification(result.message, 'success');
-                authManager.showMainApp();
-                loadCategories();
-                loadAreas();
-                loadPopularRecipes();
+            let result;
+            if (authManager.authType === 'user') {
+                result = authManager.signin(email, password);
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    authManager.showMainApp();
+                    loadCategories();
+                    loadAreas();
+                    loadUserMessages();
+                } else {
+                    showNotification(result.message, 'error');
+                }
             } else {
-                showNotification(result.message, 'error');
+                result = authManager.signinAdmin(email, password);
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    authManager.showAdminApp();
+                    loadAdminData();
+                } else {
+                    showNotification(result.message, 'error');
+                }
             }
         });
 
@@ -1694,18 +3388,31 @@
             if (!isValid) return;
             
             // Attempt registration
-            const result = authManager.register(name, email, password);
-            
-            if (result.success) {
-                showNotification(result.message, 'success');
-                // Auto sign in after successful registration
-                authManager.signin(email, password);
-                authManager.showMainApp();
-                loadCategories();
-                loadAreas();
-                loadPopularRecipes();
+            let result;
+            if (authManager.authType === 'user') {
+                result = authManager.register(name, email, password);
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    // Auto sign in after successful registration
+                    authManager.signin(email, password);
+                    authManager.showMainApp();
+                    loadCategories();
+                    loadAreas();
+                    loadUserMessages();
+                } else {
+                    showNotification(result.message, 'error');
+                }
             } else {
-                showNotification(result.message, 'error');
+                result = authManager.registerAdmin(name, email, password);
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    // Auto sign in after successful registration
+                    authManager.signinAdmin(email, password);
+                    authManager.showAdminApp();
+                    loadAdminData();
+                } else {
+                    showNotification(result.message, 'error');
+                }
             }
         });
 
@@ -1715,22 +3422,397 @@
             showNotification('You have been logged out', 'info');
         });
 
-        // Load popular recipes as fallback
-        async function loadPopularRecipes() {
-            try {
-                const data = await apiService.fetchPopularRecipes();
-                if (data.meals) {
-                    dataManager.popularRecipes = data.meals.slice(0, 20); // Store first 20 as popular
-                    
-                    // Index popular recipes in data manager
-                    dataManager.popularRecipes.forEach(recipe => {
-                        dataManager.addRecipe(recipe);
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading popular recipes:', error);
+        // Admin Logout Button
+        adminLogoutBtn.addEventListener('click', () => {
+            authManager.logoutAdmin();
+            showNotification('You have been logged out', 'info');
+        });
+
+        // Header Icon Functionality
+        messageBell.addEventListener('click', () => {
+            messageDropdown.classList.toggle('show');
+            subscriptionDropdown.classList.remove('show');
+        });
+
+        messageDropdownClose.addEventListener('click', () => {
+            messageDropdown.classList.remove('show');
+        });
+
+        subscriptionBell.addEventListener('click', () => {
+            subscriptionDropdown.classList.toggle('show');
+            messageDropdown.classList.remove('show');
+        });
+
+        subscriptionDropdownClose.addEventListener('click', () => {
+            subscriptionDropdown.classList.remove('show');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!messageBell.contains(e.target)) {
+                messageDropdown.classList.remove('show');
             }
+            if (!subscriptionBell.contains(e.target)) {
+                subscriptionDropdown.classList.remove('show');
+            }
+        });
+
+        // Recipe Modal Functionality
+        modalClose.addEventListener('click', () => {
+            recipeModal.classList.remove('show');
+        });
+
+        recipeModal.addEventListener('click', (e) => {
+            if (e.target === recipeModal) {
+                recipeModal.classList.remove('show');
+            }
+        });
+
+        // Load user messages into dropdown
+        function loadUserMessages() {
+            const messages = dataManager.getMessages();
+            
+            if (messages.length === 0) {
+                messageDropdownContent.innerHTML = '<div class="dropdown-empty">No messages at this time.</div>';
+                messageBadge.style.display = 'none';
+                return;
+            }
+            
+            // Update badge
+            messageBadge.textContent = messages.length;
+            messageBadge.style.display = 'flex';
+            
+            // Clear previous messages
+            messageDropdownContent.innerHTML = '';
+            
+            // Add messages
+            messages.forEach(message => {
+                const messageItem = document.createElement('div');
+                messageItem.className = 'dropdown-item';
+                
+                const date = new Date(message.date);
+                const formattedDate = date.toLocaleDateString();
+                
+                messageItem.innerHTML = `
+                    <div class="item-title">${message.title}</div>
+                    <div class="item-content">${message.content}</div>
+                    <div class="item-date">${formattedDate}</div>
+                `;
+                
+                messageDropdownContent.appendChild(messageItem);
+            });
         }
+
+        // Load admin data
+        function loadAdminData() {
+            // Load categories
+            const categories = dataManager.getCategories();
+            const categoryList = document.getElementById('categoryList');
+            categoryList.innerHTML = '';
+            
+            categories.forEach(category => {
+                const categoryItem = document.createElement('div');
+                categoryItem.className = 'category-item';
+                categoryItem.innerHTML = `
+                    <i class="fas fa-tag"></i>
+                    <span>${category}</span>
+                `;
+                categoryList.appendChild(categoryItem);
+            });
+            
+            // Load areas
+            const areas = dataManager.getAreas();
+            const areaList = document.getElementById('areaList');
+            areaList.innerHTML = '';
+            
+            areas.forEach(area => {
+                const areaItem = document.createElement('div');
+                areaItem.className = 'area-item';
+                areaItem.innerHTML = `
+                    <i class="fas fa-globe"></i>
+                    <span>${area}</span>
+                `;
+                areaList.appendChild(areaItem);
+            });
+            
+            // Load recipes
+            loadRecipesList();
+            
+            // Load messages
+            loadMessagesList();
+            
+            // Update category and area dropdowns in recipe form
+            updateRecipeFormDropdowns();
+        }
+
+        // Update recipe form dropdowns
+        function updateRecipeFormDropdowns() {
+            const recipeCategory = document.getElementById('recipeCategory');
+            const recipeArea = document.getElementById('recipeArea');
+            
+            // Clear existing options
+            recipeCategory.innerHTML = '<option value="">Select a category</option>';
+            recipeArea.innerHTML = '<option value="">Select a cuisine</option>';
+            
+            // Add categories
+            const categories = dataManager.getCategories();
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                recipeCategory.appendChild(option);
+            });
+            
+            // Add areas
+            const areas = dataManager.getAreas();
+            areas.forEach(area => {
+                const option = document.createElement('option');
+                option.value = area;
+                option.textContent = area;
+                recipeArea.appendChild(option);
+            });
+        }
+
+        // Load recipes list
+        function loadRecipesList() {
+            const recipes = dataManager.getAllRecipes();
+            const recipesList = document.getElementById('recipesList');
+            
+            if (recipes.length === 0) {
+                recipesList.innerHTML = '<p>No recipes added yet.</p>';
+                return;
+            }
+            
+            recipesList.innerHTML = '';
+            recipes.forEach(recipe => {
+                const recipeItem = document.createElement('div');
+                recipeItem.className = 'recipe-card';
+                recipeItem.style.marginBottom = '1rem';
+                
+                recipeItem.innerHTML = `
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">${recipe.strMeal}</h3>
+                        <div class="recipe-meta">
+                            <div class="recipe-category">
+                                <i class="fas fa-tag"></i>
+                                ${recipe.strCategory}
+                            </div>
+                            <div class="recipe-area">
+                                <i class="fas fa-globe"></i>
+                                ${recipe.strArea}
+                            </div>
+                        </div>
+                        <button class="btn-delete" data-id="${recipe.idMeal}">Delete</button>
+                    </div>
+                `;
+                
+                recipesList.appendChild(recipeItem);
+            });
+            
+            // Add delete event listeners
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    if (confirm('Are you sure you want to delete this recipe?')) {
+                        dataManager.deleteRecipe(id);
+                        loadRecipesList();
+                        showNotification('Recipe deleted successfully', 'success');
+                    }
+                });
+            });
+        }
+
+        // Load messages list
+        function loadMessagesList() {
+            const messages = dataManager.getMessages();
+            const messageList = document.getElementById('messageList');
+            
+            if (messages.length === 0) {
+                messageList.innerHTML = '<p>No messages sent yet.</p>';
+                return;
+            }
+            
+            messageList.innerHTML = '';
+            messages.forEach(message => {
+                const messageItem = document.createElement('div');
+                messageItem.className = 'message-item';
+                
+                const date = new Date(message.date);
+                const formattedDate = date.toLocaleDateString();
+                
+                messageItem.innerHTML = `
+                    <div class="message-content">
+                        <div class="message-title">${message.title}</div>
+                        <div class="message-text">${message.content}</div>
+                    </div>
+                    <div class="message-date">${formattedDate}</div>
+                    <button class="btn-delete" data-id="${message.id}">Delete</button>
+                `;
+                
+                messageList.appendChild(messageItem);
+            });
+            
+            // Add delete event listeners
+            document.querySelectorAll('.message-item .btn-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    if (confirm('Are you sure you want to delete this message?')) {
+                        dataManager.deleteMessage(id);
+                        loadMessagesList();
+                        showNotification('Message deleted successfully', 'success');
+                    }
+                });
+            });
+        }
+
+        // Admin tabs
+        adminTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                
+                // Update active tab
+                adminTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.admin-tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
+
+        // Add ingredient button
+        addIngredientBtn.addEventListener('click', () => {
+            const ingredientRow = document.createElement('div');
+            ingredientRow.className = 'ingredient-row';
+            ingredientRow.innerHTML = `
+                <input type="text" class="form-control ingredient-name" placeholder="Ingredient name">
+                <input type="text" class="form-control ingredient-measure" placeholder="Measure">
+                <button type="button" class="btn-remove"><i class="fas fa-times"></i></button>
+            `;
+            
+            ingredientsContainer.appendChild(ingredientRow);
+            
+            // Add remove event listener
+            ingredientRow.querySelector('.btn-remove').addEventListener('click', function() {
+                ingredientRow.remove();
+            });
+        });
+
+        // Recipe form submission
+        recipeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('recipeName').value;
+            const category = document.getElementById('recipeCategory').value;
+            const area = document.getElementById('recipeArea').value;
+            const image = document.getElementById('recipeImage').value;
+            const instructions = document.getElementById('recipeInstructions').value;
+            const calories = document.getElementById('recipeCalories').value;
+            const protein = document.getElementById('recipeProtein').value;
+            const carbs = document.getElementById('recipeCarbs').value;
+            const fat = document.getElementById('recipeFat').value;
+            
+            // Get ingredients
+            const ingredientRows = ingredientsContainer.querySelectorAll('.ingredient-row');
+            const ingredients = [];
+            
+            ingredientRows.forEach(row => {
+                const name = row.querySelector('.ingredient-name').value;
+                const measure = row.querySelector('.ingredient-measure').value;
+                
+                if (name && measure) {
+                    ingredients.push({ name, measure });
+                }
+            });
+            
+            // Create recipe object
+            const recipe = {
+                idMeal: Date.now().toString(),
+                strMeal: name,
+                strCategory: category,
+                strArea: area,
+                strMealThumb: image || `https://picsum.photos/seed/${name}/400/300.jpg`,
+                strInstructions: instructions,
+                ingredients: ingredients,
+                nutrition: {
+                    calories: parseInt(calories) || 0,
+                    protein: parseInt(protein) || 0,
+                    carbs: parseInt(carbs) || 0,
+                    fat: parseInt(fat) || 0
+                }
+            };
+            
+            // Add recipe to data manager
+            dataManager.addRecipe(recipe);
+            
+            // Reset form
+            recipeForm.reset();
+            
+            // Reload recipes list
+            loadRecipesList();
+            
+            showNotification('Recipe added successfully', 'success');
+        });
+
+        // Category form submission
+        categoryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const category = document.getElementById('newCategory').value;
+            
+            if (category) {
+                dataManager.addCategory(category);
+                
+                // Reset form
+                categoryForm.reset();
+                
+                // Reload categories list
+                loadAdminData();
+                
+                showNotification('Category added successfully', 'success');
+            }
+        });
+
+        // Area form submission
+        areaForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const area = document.getElementById('newArea').value;
+            
+            if (area) {
+                dataManager.addArea(area);
+                
+                // Reset form
+                areaForm.reset();
+                
+                // Reload areas list
+                loadAdminData();
+                
+                showNotification('Cuisine added successfully', 'success');
+            }
+        });
+
+        // Message form submission
+        messageForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('messageTitle').value;
+            const content = document.getElementById('messageContent').value;
+            
+            if (title && content) {
+                dataManager.addMessage(title, content);
+                
+                // Reset form
+                messageForm.reset();
+                
+                // Reload messages list
+                loadMessagesList();
+                
+                showNotification('Message sent successfully', 'success');
+            }
+        });
 
         // Setup custom select functionality
         function setupCustomSelects() {
@@ -1789,108 +3871,79 @@
         }
 
         // Load recipe categories
-        async function loadCategories() {
-            try {
-                const data = await apiService.fetchCategories();
+        function loadCategories() {
+            const categories = dataManager.getCategories();
+            
+            const categoryOptions = categorySelect.querySelector('.select-options');
+            
+            categories.forEach(category => {
+                // Add to original select
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryOriginal.appendChild(option);
                 
-                const categoryOptions = categorySelect.querySelector('.select-options');
+                // Add to custom select
+                const customOption = document.createElement('div');
+                customOption.className = 'select-option';
+                customOption.setAttribute('data-value', category);
+                customOption.textContent = category;
+                categoryOptions.appendChild(customOption);
                 
-                data.categories.forEach(category => {
-                    // Add to original select
-                    const option = document.createElement('option');
-                    option.value = category.strCategory;
-                    option.textContent = category.strCategory;
-                    categoryOriginal.appendChild(option);
+                // Add click event
+                customOption.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    const text = this.textContent.replace('★', '').trim();
+                    const trigger = categorySelect.querySelector('.select-trigger span');
                     
-                    // Add to custom select
-                    const customOption = document.createElement('div');
-                    customOption.className = 'select-option';
-                    customOption.setAttribute('data-value', category.strCategory);
-                    customOption.textContent = category.strCategory;
-                    categoryOptions.appendChild(customOption);
+                    // Update trigger text
+                    trigger.textContent = text;
                     
-                    // Add click event
-                    customOption.addEventListener('click', function() {
-                        const value = this.getAttribute('data-value');
-                        const text = this.textContent.replace('★', '').trim();
-                        const trigger = categorySelect.querySelector('.select-trigger span');
-                        
-                        // Update trigger text
-                        trigger.textContent = text;
-                        
-                        // Update original select value
-                        categoryOriginal.value = value;
-                        
-                        // Mark selected option
-                        const options = categorySelect.querySelectorAll('.select-option');
-                        options.forEach(opt => opt.classList.remove('selected'));
-                        this.classList.add('selected');
-                        
-                        // Close dropdown
-                        categorySelect.classList.remove('open');
-                    });
+                    // Update original select value
+                    categoryOriginal.value = value;
+                    
+                    // Mark selected option
+                    const options = categorySelect.querySelectorAll('.select-option');
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    // Close dropdown
+                    categorySelect.classList.remove('open');
                 });
-                
-                // Setup custom selects after loading options
-                setupCustomSelects();
-            } catch (error) {
-                showNotification('Failed to load categories. Please try again.', 'error');
-                console.error('Error loading categories:', error);
-            }
+            });
+            
+            // Setup custom selects after loading options
+            setupCustomSelects();
         }
 
         // Load cuisine areas
-        async function loadAreas() {
-            try {
-                const data = await apiService.fetchAreas();
+        function loadAreas() {
+            const areas = dataManager.getAreas();
+            
+            const areaOptions = areaSelect.querySelector('.select-options');
+            
+            // Store all areas for fusion functionality
+            allAreas = areas;
+            
+            areas.forEach(area => {
+                // Add to original select
+                const option = document.createElement('option');
+                option.value = area;
+                option.textContent = area;
+                areaOriginal.appendChild(option);
                 
-                const areaOptions = areaSelect.querySelector('.select-options');
+                // Add to custom select (before the fusion option)
+                const customOption = document.createElement('div');
+                customOption.className = 'select-option';
+                customOption.setAttribute('data-value', area);
+                customOption.textContent = area;
                 
-                // Store all areas for fusion functionality
-                allAreas = data.meals.map(area => area.strArea);
-                
-                data.meals.forEach(area => {
-                    // Add to original select
-                    const option = document.createElement('option');
-                    option.value = area.strArea;
-                    option.textContent = area.strArea;
-                    areaOriginal.appendChild(option);
-                    
-                    // Add to custom select (before the fusion option)
-                    const customOption = document.createElement('div');
-                    customOption.className = 'select-option';
-                    customOption.setAttribute('data-value', area.strArea);
-                    customOption.textContent = area.strArea;
-                    
-                    // Insert before the fusion option
-                    const fusionOption = areaOptions.querySelector('.fusion-option');
-                    areaOptions.insertBefore(customOption, fusionOption);
-                    
-                    // Add click event
-                    customOption.addEventListener('click', function() {
-                        const value = this.getAttribute('data-value');
-                        const text = this.textContent.replace('★', '').trim();
-                        const trigger = areaSelect.querySelector('.select-trigger span');
-                        
-                        // Update trigger text
-                        trigger.textContent = text;
-                        
-                        // Update original select value
-                        areaOriginal.value = value;
-                        
-                        // Mark selected option
-                        const options = areaSelect.querySelectorAll('.select-option');
-                        options.forEach(opt => opt.classList.remove('selected'));
-                        this.classList.add('selected');
-                        
-                        // Close dropdown
-                        areaSelect.classList.remove('open');
-                    });
-                });
-                
-                // Add click event for fusion option
+                // Insert before the fusion option
                 const fusionOption = areaOptions.querySelector('.fusion-option');
-                fusionOption.addEventListener('click', function() {
+                areaOptions.insertBefore(customOption, fusionOption);
+                
+                // Add click event
+                customOption.addEventListener('click', function() {
                     const value = this.getAttribute('data-value');
                     const text = this.textContent.replace('★', '').trim();
                     const trigger = areaSelect.querySelector('.select-trigger span');
@@ -1909,10 +3962,29 @@
                     // Close dropdown
                     areaSelect.classList.remove('open');
                 });
-            } catch (error) {
-                showNotification('Failed to load cuisines. Please try again.', 'error');
-                console.error('Error loading areas:', error);
-            }
+            });
+            
+            // Add click event for fusion option
+            const fusionOption = areaOptions.querySelector('.fusion-option');
+            fusionOption.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const text = this.textContent.replace('★', '').trim();
+                const trigger = areaSelect.querySelector('.select-trigger span');
+                
+                // Update trigger text
+                trigger.textContent = text;
+                
+                // Update original select value
+                areaOriginal.value = value;
+                
+                // Mark selected option
+                const options = areaSelect.querySelectorAll('.select-option');
+                options.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Close dropdown
+                areaSelect.classList.remove('open');
+            });
         }
 
         // Handle form submission
@@ -1930,7 +4002,7 @@
             await findFusionRecipes(category, area);
         });
 
-        // Find fusion recipes using Promise.all for concurrent API calls
+        // Find fusion recipes
         async function findFusionRecipes(category, area) {
             // Show loading state
             loading.classList.add('active');
@@ -1945,69 +4017,33 @@
                     // For fusion, get recipes from multiple cuisines
                     const selectedAreas = getRandomAreas(3); // Get 3 random areas for fusion
                     
-                    // Use Promise.all to fetch recipes from multiple areas concurrently
-                    const allMeals = await apiService.fetchRecipesFromMultipleAreas(category, selectedAreas);
+                    // Get recipes from all areas
+                    selectedAreas.forEach(selectedArea => {
+                        const recipes = dataManager.getAreaRecipes(selectedArea);
+                        recipes.forEach(recipe => {
+                            if (recipe.strCategory === category) {
+                                fusionRecipes.push({
+                                    ...recipe,
+                                    isFusion: true,
+                                    fusionAreas: selectedAreas
+                                });
+                            }
+                        });
+                    });
                     
-                    // Also fetch recipes by category alone
-                    const categoryData = await apiService.fetchRecipesByCategory(category);
-                    if (categoryData.meals) {
-                        const mealsWithArea = categoryData.meals.map(meal => ({
-                            ...meal,
-                            fusionArea: 'Mixed'
-                        }));
-                        allMeals.push(...mealsWithArea);
+                    // If no recipes found, get all recipes from the category
+                    if (fusionRecipes.length === 0) {
+                        const categoryRecipes = dataManager.getCategoryRecipes(category);
+                        categoryRecipes.forEach(recipe => {
+                            fusionRecipes.push({
+                                ...recipe,
+                                isFusion: true,
+                                fusionAreas: selectedAreas
+                            });
+                        });
                     }
-                    
-                    // Remove duplicates based on meal ID using Set for efficiency
-                    const uniqueMeals = [];
-                    const mealIds = new Set();
-                    
-                    allMeals.forEach(meal => {
-                        if (!mealIds.has(meal.idMeal)) {
-                            mealIds.add(meal.idMeal);
-                            uniqueMeals.push(meal);
-                        }
-                    });
-                    
-                    // Store recipes in data manager
-                    uniqueMeals.forEach(recipe => {
-                        dataManager.addRecipe(recipe);
-                        dataManager.addRecipeToCategory(category, recipe.idMeal);
-                    });
-                    
-                    // Fetch full details for all unique meals using Promise.all
-                    const detailedRecipes = await apiService.fetchMultipleRecipeDetails(uniqueMeals.map(m => m.idMeal));
-                    
-                    fusionRecipes = detailedRecipes.map(recipe => ({
-                        ...recipe,
-                        isFusion: true,
-                        fusionAreas: selectedAreas
-                    }));
                 } else {
                     // Regular intersection of category and area
-                    
-                    // Use Promise.all to fetch both category and area recipes concurrently
-                    const [categoryData, areaData] = await Promise.all([
-                        apiService.fetchRecipesByCategory(category),
-                        apiService.fetchRecipesByArea(area)
-                    ]);
-                    
-                    // Store recipes in data manager
-                    if (categoryData.meals) {
-                        categoryData.meals.forEach(recipe => {
-                            dataManager.addRecipe(recipe);
-                            dataManager.addRecipeToCategory(category, recipe.idMeal);
-                        });
-                    }
-                    
-                    if (areaData.meals) {
-                        areaData.meals.forEach(recipe => {
-                            dataManager.addRecipe(recipe);
-                            dataManager.addRecipeToArea(area, recipe.idMeal);
-                        });
-                    }
-                    
-                    // Find intersection using efficient Set operations
                     const intersection = dataManager.findIntersection(category, area);
                     
                     if (intersection.length > 0) {
@@ -2054,7 +4090,8 @@
                         
                         // If still not enough, add popular recipes
                         if (combinedRecipes.length < 6) {
-                            dataManager.popularRecipes.slice(0, 6 - combinedRecipes.length).forEach(recipe => {
+                            const allRecipes = dataManager.getAllRecipes();
+                            allRecipes.slice(0, 6 - combinedRecipes.length).forEach(recipe => {
                                 if (!combinedRecipes.find(r => r.idMeal === recipe.idMeal)) {
                                     combinedRecipes.push({
                                         ...recipe,
@@ -2070,36 +4107,16 @@
                     }
                 }
                 
-                // Fetch full details for all recipes using Promise.all
-                const recipeIds = fusionRecipes.map(r => r.idMeal);
-                const detailedRecipes = await apiService.fetchMultipleRecipeDetails(recipeIds);
-                
                 // Display results
-                displayResults(detailedRecipes, category, area, isSuggested);
+                displayResults(fusionRecipes, category, area, isSuggested);
             } catch (error) {
                 showNotification('Failed to fetch recipes. Please try again.', 'error');
                 console.error('Error fetching recipes:', error);
-                
-                // Fallback to popular recipes
-                displayFallbackRecipes(category, area);
             } finally {
                 // Hide loading state
                 loading.classList.remove('active');
                 searchBtn.disabled = false;
             }
-        }
-
-        // Display fallback recipes if everything fails
-        function displayFallbackRecipes(category, area) {
-            const fallbackRecipes = dataManager.popularRecipes.slice(0, 6).map(recipe => ({
-                ...recipe,
-                isSuggested: true,
-                sourceType: 'fallback',
-                fusionAreas: [area]
-            }));
-            
-            displayResults(fallbackRecipes, category, area, true);
-            showNotification('Showing popular recipes as fallback', 'info');
         }
 
         // Get random areas for fusion
@@ -2124,8 +4141,10 @@
             recipeGrid.innerHTML = '';
             
             // Add each recipe to the grid
-            recipes.forEach(recipe => {
-                const recipeCard = createRecipeCard(recipe, category, area);
+            recipes.forEach((recipe, index) => {
+                // Check if user can view this recipe
+                const canView = index < 2 || authManager.canViewRecipe();
+                const recipeCard = createRecipeCard(recipe, category, area, canView);
                 recipeGrid.appendChild(recipeCard);
                 
                 // Setup lazy loading for recipe image
@@ -2139,10 +4158,13 @@
             showNotification(`Found ${recipes.length} ${recipeType}${recipes.length !== 1 ? 's' : ''}!`, 'success');
         }
 
-        // Create a recipe card element with full details
-        function createRecipeCard(recipe, category, area) {
+        // Create a recipe card element with minimal details
+        function createRecipeCard(recipe, category, area, canView = true) {
             const card = document.createElement('div');
             card.className = 'recipe-card';
+            if (!canView) {
+                card.classList.add('blurred');
+            }
             card.dataset.recipeId = recipe.idMeal;
             
             let indicators = '';
@@ -2160,28 +4182,6 @@
             } else if (recipe.sourceType === 'popular') {
                 areaDisplay = 'Popular choice';
             }
-            
-            // Extract ingredients for nutrition calculation
-            const ingredients = [];
-            for (let i = 1; i <= 20; i++) {
-                const ingredient = recipe[`strIngredient${i}`];
-                if (ingredient && ingredient.trim() !== '') {
-                    ingredients.push(ingredient);
-                }
-            }
-            
-            // Calculate nutrition
-            const nutrition = nutritionCalculator.calculateNutrition(ingredients);
-            const healthRating = nutritionCalculator.getHealthRating(nutrition);
-            
-            // Create ingredients list
-            const ingredientsList = createIngredientsList(recipe);
-            
-            // Create instructions list
-            const instructionsList = createInstructionsList(recipe);
-            
-            // Create nutrition summary
-            const nutritionSummary = createNutritionSummary(nutrition, healthRating);
             
             card.innerHTML = `
                 <div class="recipe-image-container">
@@ -2203,56 +4203,56 @@
                             ${areaDisplay}
                         </div>
                     </div>
-                    
-                    <!-- Nutrition Badge -->
-                    <div class="nutrition-badge">
-                        <i class="fas fa-fire"></i>
-                        <div class="nutrition-info">
-                            <span class="calories-value">${nutrition.calories}</span>
-                            <span class="calories-label">cal</span>
-                        </div>
-                        <div class="nutrition-details">
-                            <div class="nutrition-item protein">
-                                <i class="fas fa-drumstick-bite"></i>
-                                ${nutrition.protein}g
-                            </div>
-                            <div class="nutrition-item carbs">
-                                <i class="fas fa-bread-slice"></i>
-                                ${nutrition.carbs}g
-                            </div>
-                            <div class="nutrition-item fat">
-                                <i class="fas fa-cheese"></i>
-                                ${nutrition.fat}g
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="recipe-details">
-                        ${nutritionSummary}
-                        
-                        <div class="recipe-section">
-                            <h4 class="section-title">
-                                <i class="fas fa-list"></i>
-                                Ingredients
-                            </h4>
-                            ${ingredientsList}
-                        </div>
-                        <div class="recipe-section">
-                            <h4 class="section-title">
-                                <i class="fas fa-tasks"></i>
-                                Instructions
-                            </h4>
-                            ${instructionsList}
-                        </div>
-                    </div>
                 </div>
             `;
+            
+            // Add click event to open modal
+            if (canView) {
+                card.addEventListener('click', () => {
+                    openRecipeModal(recipe, category, area);
+                    authManager.incrementRecipeView();
+                });
+            }
             
             return card;
         }
 
+        // Open recipe modal with full details
+        function openRecipeModal(recipe, category, area) {
+            // Set modal content
+            modalRecipeImage.src = recipe.strMealThumb;
+            modalRecipeTitle.textContent = recipe.strMeal;
+            modalRecipeCategory.textContent = category;
+            modalRecipeArea.textContent = area;
+            
+            // Extract ingredients for nutrition calculation
+            const ingredients = recipe.ingredients ? recipe.ingredients.map(ing => ing.name) : [];
+            
+            // Calculate nutrition if not provided
+            let nutrition = recipe.nutrition || nutritionCalculator.calculateNutrition(ingredients);
+            const healthRating = nutritionCalculator.getHealthRating(nutrition);
+            
+            // Set nutrition values
+            modalCaloriesValue.textContent = nutrition.calories;
+            modalProteinValue.textContent = nutrition.protein;
+            modalCarbsValue.textContent = nutrition.carbs;
+            modalFatValue.textContent = nutrition.fat;
+            
+            // Create nutrition summary
+            modalNutritionSummary.innerHTML = createNutritionSummaryHTML(nutrition, healthRating);
+            
+            // Create ingredients list
+            modalIngredientsList.innerHTML = createIngredientsListHTML(recipe);
+            
+            // Create instructions list
+            modalInstructionsList.innerHTML = createInstructionsListHTML(recipe);
+            
+            // Show modal
+            recipeModal.classList.add('show');
+        }
+
         // Create nutrition summary HTML
-        function createNutritionSummary(nutrition, healthRating) {
+        function createNutritionSummaryHTML(nutrition, healthRating) {
             let healthLabel = 'Fair';
             let healthColor = '#FFC107';
             
@@ -2271,51 +4271,61 @@
             }
             
             return `
-                <div class="nutrition-summary">
-                    <h4 class="nutrition-summary-title">
-                        <i class="fas fa-heartbeat"></i>
-                        Nutritional Information
-                        <span style="margin-left: auto; font-size: 0.9rem; color: ${healthColor};">
-                            ${healthLabel} (${healthRating}/100)
-                        </span>
-                    </h4>
-                    <div class="nutrition-macros">
-                        <div class="macro-item calories">
-                            <div class="macro-value">${nutrition.calories}</div>
-                            <div class="macro-label">Calories</div>
-                        </div>
-                        <div class="macro-item protein">
-                            <div class="macro-value">${nutrition.protein}g</div>
-                            <div class="macro-label">Protein</div>
-                        </div>
-                        <div class="macro-item carbs">
-                            <div class="macro-value">${nutrition.carbs}g</div>
-                            <div class="macro-label">Carbs</div>
-                        </div>
-                        <div class="macro-item fat">
-                            <div class="macro-value">${nutrition.fat}g</div>
-                            <div class="macro-label">Fat</div>
-                        </div>
+                <h4 class="nutrition-summary-title">
+                    <i class="fas fa-heartbeat"></i>
+                    Nutritional Information
+                    <span style="margin-left: auto; font-size: 0.9rem; color: ${healthColor};">
+                        ${healthLabel} (${healthRating}/100)
+                    </span>
+                </h4>
+                <div class="nutrition-macros">
+                    <div class="macro-item calories">
+                        <div class="macro-value">${nutrition.calories}</div>
+                        <div class="macro-label">Calories</div>
+                    </div>
+                    <div class="macro-item protein">
+                        <div class="macro-value">${nutrition.protein}g</div>
+                        <div class="macro-label">Protein</div>
+                    </div>
+                    <div class="macro-item carbs">
+                        <div class="macro-value">${nutrition.carbs}g</div>
+                        <div class="macro-label">Carbs</div>
+                    </div>
+                    <div class="macro-item fat">
+                        <div class="macro-value">${nutrition.fat}g</div>
+                        <div class="macro-label">Fat</div>
                     </div>
                 </div>
             `;
         }
 
         // Create ingredients list HTML
-        function createIngredientsList(recipe) {
+        function createIngredientsListHTML(recipe) {
             let ingredientsHTML = '<div class="ingredients-list">';
             
-            for (let i = 1; i <= 20; i++) {
-                const ingredient = recipe[`strIngredient${i}`];
-                const measure = recipe[`strMeasure${i}`];
-                
-                if (ingredient && ingredient.trim() !== '') {
+            if (recipe.ingredients) {
+                recipe.ingredients.forEach(ingredient => {
                     ingredientsHTML += `
                         <div class="ingredient-item">
                             <i class="fas fa-check-circle"></i>
-                            <span>${measure ? measure + ' ' : ''}${ingredient}</span>
+                            <span>${ingredient.measure ? ingredient.measure + ' ' : ''}${ingredient.name}</span>
                         </div>
                     `;
+                });
+            } else {
+                // Fallback for old recipe format
+                for (let i = 1; i <= 20; i++) {
+                    const ingredient = recipe[`strIngredient${i}`];
+                    const measure = recipe[`strMeasure${i}`];
+                    
+                    if (ingredient && ingredient.trim() !== '') {
+                        ingredientsHTML += `
+                            <div class="ingredient-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>${measure ? measure + ' ' : ''}${ingredient}</span>
+                            </div>
+                        `;
+                    }
                 }
             }
             
@@ -2324,7 +4334,7 @@
         }
 
         // Create instructions list HTML
-        function createInstructionsList(recipe) {
+        function createInstructionsListHTML(recipe) {
             if (!recipe.strInstructions) return '<p>No instructions available</p>';
             
             // Split instructions by steps (commonly by newlines or periods)
@@ -2345,6 +4355,24 @@
             instructionsHTML += '</div>';
             return instructionsHTML;
         }
+
+        // Subscription buttons
+        document.querySelectorAll('.btn-subscribe').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const plan = this.getAttribute('data-plan');
+                const price = this.getAttribute('data-price');
+                const duration = parseInt(this.getAttribute('data-duration'));
+                
+                if (confirm(`Subscribe to ${plan} plan for ₹${price}?`)) {
+                    const result = authManager.subscribe(plan, price, duration);
+                    if (result.success) {
+                        showNotification(result.message, 'success');
+                    } else {
+                        showNotification(result.message, 'error');
+                    }
+                }
+            });
+        });
 
         // Show notification
         function showNotification(message, type = 'info') {
